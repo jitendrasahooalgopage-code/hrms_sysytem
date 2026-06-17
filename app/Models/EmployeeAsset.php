@@ -23,4 +23,12 @@ class EmployeeAsset extends Model
     {
         return $this->belongsTo(Employee::class);
     }
+
+    public function requests()
+{
+    return $this->hasMany(
+        AssetRequest::class,
+        'employee_asset_id'
+    );
+}
 }

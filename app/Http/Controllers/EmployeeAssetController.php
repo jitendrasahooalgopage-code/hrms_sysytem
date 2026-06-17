@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Employee;
 use App\Models\EmployeeAsset;
 use Illuminate\Http\Request;
+use App\Models\AssetRequest;
 
 class EmployeeAssetController extends Controller
 {
@@ -143,6 +144,71 @@ public function myAssets()
         compact('assets')
     );
 }
+
+public function requests($id)
+{
+    $asset = EmployeeAsset::with('employee')
+        ->findOrFail($id);
+
+    $requests = AssetRequest::where(
+        'employee_asset_id',
+        $id
+    )
+    ->latest()
+    ->get();
+
+    return view(
+        'admin.employee_assets.requests',
+        compact(
+            'asset',
+            'requests'
+        )
+    );
+}
+
+public function assetRequestEdit($id)
+{
+    $requestData = AssetRequest::with([
+        'employee',
+        'asset'
+    ])->findOrFail($id);
+
+    return view(
+        'admin.employee_assets.asset_requests_edit',
+        compact('requestData')
+    );
+}
+
+public function assetRequestUpdate(Request $request, $id)
+{
+
+
+    $assetRequest = AssetRequest::findOrFail($id);
+
+    $assetRequest->update([
+
+        'status' => $request->status,
+
+        'admin_remark' => $request->admin_remark,
+
+        'approved_by' => auth()->id(),
+
+        'approved_at' => now(),
+
+    ]);
+
+    return redirect()
+        ->route(
+            'employee-assets.requests',
+            $assetRequest->employee_asset_id
+        )
+        ->with(
+            'success',
+            'Request Updated Successfully'
+        );
+}
+
+
 
 
 }

@@ -112,6 +112,13 @@ public function asset()
     return $this->hasOne(EmployeeAsset::class);
 }
 
+public function assetRequests()
+{
+    return $this->hasMany(
+        AssetRequest::class
+    );
+}
+
 // Helper — get the first approver when submitting a leave
 public function getFirstApprover(): ?Employee
 {
