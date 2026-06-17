@@ -3,7 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'fe432f0aaec14a9b7be758b47d83bdd43b2057d5',
+        'reference' => '1db25c05b42f174cb4c5831d2318017cf6aec4b0',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -334,6 +334,24 @@
                 0 => '10.50.2',
             ),
         ),
+        'jaybizzle/crawler-detect' => array(
+            'pretty_version' => 'v1.4.0',
+            'version' => '1.4.0.0',
+            'reference' => '20d7bd4a6ee68444693fe75bc5c6f12f65ad512d',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../jaybizzle/crawler-detect',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'jenssegers/agent' => array(
+            'pretty_version' => 'v2.6.4',
+            'version' => '2.6.4.0',
+            'reference' => 'daa11c43729510b3700bc34d414664966b03bffe',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../jenssegers/agent',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'laravel/breeze' => array(
             'pretty_version' => 'v1.29.1',
             'version' => '1.29.1.0',
@@ -355,7 +373,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'fe432f0aaec14a9b7be758b47d83bdd43b2057d5',
+            'reference' => '1db25c05b42f174cb4c5831d2318017cf6aec4b0',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -447,6 +465,15 @@
             'replaced' => array(
                 0 => 'v2.2.6',
             ),
+        ),
+        'mobiledetect/mobiledetectlib' => array(
+            'pretty_version' => '2.8.47',
+            'version' => '2.8.47.0',
+            'reference' => '28e9045958dcaf771f9b56564549d5b174e38b0e',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../mobiledetect/mobiledetectlib',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'monolog/monolog' => array(
             'pretty_version' => '3.10.0',
