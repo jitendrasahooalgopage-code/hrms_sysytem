@@ -52,8 +52,11 @@
                             <td>
                                 <span class="badge px-2.5 py-1.5 rounded-pill fw-semibold status-pill {{ $asset->status === 'Assigned' ? 'bg-success-subtle text-success' : 'bg-secondary-subtle text-secondary' }}">
                                     <span class="status-dot {{ $asset->status === 'Assigned' ? 'bg-success' : 'bg-secondary' }}"></span>
-                                    {{ $asset->status }}
+                                    {{ $asset->status }}      
                                 </span>
+
+
+                                
                             </td>
 
                             <td class="pe-4 text-end">
