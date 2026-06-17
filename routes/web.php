@@ -18,10 +18,13 @@ use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeeAssetController;
+use App\Http\Controllers\AssetRequestController;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+
 
 // ─────────────────────────────────────────────
 // SUPER ADMIN
@@ -52,6 +55,21 @@ Route::middleware('superadmin')->prefix('super')->group(function () {
     'employee-assets',
     EmployeeAssetController::class
 );
+
+Route::get(
+    '/employee-assets/{asset}/requests',
+    [EmployeeAssetController::class, 'requests']
+)->name('employee-assets.requests');
+
+Route::put(
+    '/employee-assets/{id}/asset-request-update',
+    [EmployeeAssetController::class,'assetRequestUpdate']
+)->name('employee-assets.requests.update');
+
+Route::get(
+    '/employee-assets/{id}/asset-request-edit',
+    [EmployeeAssetController::class,'assetRequestEdit']
+)->name('employee-assets.requests.edit');
 
     Route::post('/check', [CheckController::class, 'CheckStore'])->name('check.store');
     Route::get('/report', [CheckController::class, 'sheetReport'])->name('sheet.report');
@@ -204,6 +222,21 @@ Route::middleware('employee')->prefix('employee')->group(function () {
     '/my-assets',
     [EmployeeAssetController::class,'myAssets']
 )->name('employee.assets');
+
+Route::get(
+    '/asset-requests/create/{asset}',
+    [AssetRequestController::class,'create']
+)->name('employee.asset-request.create');
+
+Route::post(
+    '/asset-requests',
+    [AssetRequestController::class,'store']
+)->name('employee.asset-request.store');
+
+Route::get(
+    '/my-asset-requests/{asset}',
+    [AssetRequestController::class, 'myRequests']
+)->name('employee.asset-request.index');
 });
 
 // ─────────────────────────────────────────────
