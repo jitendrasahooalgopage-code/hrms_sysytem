@@ -120,6 +120,11 @@ class ComposerStaticInit82a80a3f9c5af76752c3606d0e466861
             'Laravel\\Prompts\\' => 16,
             'Laravel\\Breeze\\' => 15,
         ),
+        'J' =>
+        array (
+            'Jenssegers\\Agent\\' => 17,
+            'Jaybizzle\\CrawlerDetect\\' => 24,
+        ),
         'I' =>
         array (
             'Illuminate\\Support\\' => 19,
@@ -409,6 +414,14 @@ class ComposerStaticInit82a80a3f9c5af76752c3606d0e466861
         array (
             0 => __DIR__ . '/..' . '/laravel/breeze/src',
         ),
+        'Jenssegers\\Agent\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/jenssegers/agent/src',
+        ),
+        'Jaybizzle\\CrawlerDetect\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src',
+        ),
         'Illuminate\\Support\\' =>
         array (
             0 => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Macroable',
@@ -501,10 +514,24 @@ class ComposerStaticInit82a80a3f9c5af76752c3606d0e466861
         ),
     );
 
+    public static $prefixesPsr0 = array (
+        'D' =>
+        array (
+            'Detection' =>
+            array (
+                0 => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/namespaced',
+            ),
+        ),
+    );
+
     public static $classMap = array (
+        'App\\Console\\Commands\\CheckEmployeeBirthdays' => __DIR__ . '/../..' . '/app/Console/Commands/CheckEmployeeBirthdays.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Http\\Controllers\\AdminController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdminController.php',
+        'App\\Http\\Controllers\\Api\\AuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/AuthController.php',
+        'App\\Http\\Controllers\\Api\\LeaveController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/LeaveController.php',
+        'App\\Http\\Controllers\\AssetRequestController' => __DIR__ . '/../..' . '/app/Http/Controllers/AssetRequestController.php',
         'App\\Http\\Controllers\\AttendanceController' => __DIR__ . '/../..' . '/app/Http/Controllers/AttendanceController.php',
         'App\\Http\\Controllers\\Auth\\AuthenticatedSessionController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/AuthenticatedSessionController.php',
         'App\\Http\\Controllers\\Auth\\ConfirmablePasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ConfirmablePasswordController.php',
@@ -566,6 +593,8 @@ class ComposerStaticInit82a80a3f9c5af76752c3606d0e466861
         'App\\Http\\Requests\\UpdateRoleRequest' => __DIR__ . '/../..' . '/app/Http/Requests/UpdateRoleRequest.php',
         'App\\Http\\Requests\\UpdateSalaryRequest' => __DIR__ . '/../..' . '/app/Http/Requests/UpdateSalaryRequest.php',
         'App\\Http\\Requests\\UpdateScheduleRequest' => __DIR__ . '/../..' . '/app/Http/Requests/UpdateScheduleRequest.php',
+        'App\\Mail\\AssetRequestSubmitted' => __DIR__ . '/../..' . '/app/Mail/AssetRequestSubmitted.php',
+        'App\\Models\\AssetRequest' => __DIR__ . '/../..' . '/app/Models/AssetRequest.php',
         'App\\Models\\Attendance' => __DIR__ . '/../..' . '/app/Models/Attendance.php',
         'App\\Models\\Check' => __DIR__ . '/../..' . '/app/Models/Check.php',
         'App\\Models\\Depart' => __DIR__ . '/../..' . '/app/Models/Depart.php',
@@ -578,6 +607,7 @@ class ComposerStaticInit82a80a3f9c5af76752c3606d0e466861
         'App\\Models\\LateTime' => __DIR__ . '/../..' . '/app/Models/LateTime.php',
         'App\\Models\\Leave' => __DIR__ . '/../..' . '/app/Models/Leave.php',
         'App\\Models\\LeaveHistory' => __DIR__ . '/../..' . '/app/Models/LeaveHistory.php',
+        'App\\Models\\LoginActivity' => __DIR__ . '/../..' . '/app/Models/LoginActivity.php',
         'App\\Models\\OverTime' => __DIR__ . '/../..' . '/app/Models/OverTime.php',
         'App\\Models\\Payroll' => __DIR__ . '/../..' . '/app/Models/Payroll.php',
         'App\\Models\\Role' => __DIR__ . '/../..' . '/app/Models/Role.php',
@@ -590,6 +620,7 @@ class ComposerStaticInit82a80a3f9c5af76752c3606d0e466861
         'App\\Providers\\BroadcastServiceProvider' => __DIR__ . '/../..' . '/app/Providers/BroadcastServiceProvider.php',
         'App\\Providers\\EventServiceProvider' => __DIR__ . '/../..' . '/app/Providers/EventServiceProvider.php',
         'App\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Providers/RouteServiceProvider.php',
+        'App\\Services\\LoginActivityService' => __DIR__ . '/../..' . '/app/Services/LoginActivityService.php',
         'App\\View\\Components\\AppLayout' => __DIR__ . '/../..' . '/app/View/Components/AppLayout.php',
         'App\\View\\Components\\GuestLayout' => __DIR__ . '/../..' . '/app/View/Components/GuestLayout.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
@@ -822,6 +853,7 @@ class ComposerStaticInit82a80a3f9c5af76752c3606d0e466861
         'DebugBar\\Storage\\PdoStorage' => __DIR__ . '/..' . '/php-debugbar/php-debugbar/src/DebugBar/Storage/PdoStorage.php',
         'DebugBar\\Storage\\RedisStorage' => __DIR__ . '/..' . '/php-debugbar/php-debugbar/src/DebugBar/Storage/RedisStorage.php',
         'DebugBar\\Storage\\StorageInterface' => __DIR__ . '/..' . '/php-debugbar/php-debugbar/src/DebugBar/Storage/StorageInterface.php',
+        'Detection\\MobileDetect' => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/namespaced/Detection/MobileDetect.php',
         'Dflydev\\DotAccessData\\Data' => __DIR__ . '/..' . '/dflydev/dot-access-data/src/Data.php',
         'Dflydev\\DotAccessData\\DataInterface' => __DIR__ . '/..' . '/dflydev/dot-access-data/src/DataInterface.php',
         'Dflydev\\DotAccessData\\Exception\\DataException' => __DIR__ . '/..' . '/dflydev/dot-access-data/src/Exception/DataException.php',
@@ -2335,6 +2367,14 @@ class ComposerStaticInit82a80a3f9c5af76752c3606d0e466861
         'Illuminate\\View\\ViewFinderInterface' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/ViewFinderInterface.php',
         'Illuminate\\View\\ViewName' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/ViewName.php',
         'Illuminate\\View\\ViewServiceProvider' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/ViewServiceProvider.php',
+        'Jaybizzle\\CrawlerDetect\\CrawlerDetect' => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src/CrawlerDetect.php',
+        'Jaybizzle\\CrawlerDetect\\Fixtures\\AbstractProvider' => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src/Fixtures/AbstractProvider.php',
+        'Jaybizzle\\CrawlerDetect\\Fixtures\\Crawlers' => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src/Fixtures/Crawlers.php',
+        'Jaybizzle\\CrawlerDetect\\Fixtures\\Exclusions' => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src/Fixtures/Exclusions.php',
+        'Jaybizzle\\CrawlerDetect\\Fixtures\\Headers' => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src/Fixtures/Headers.php',
+        'Jenssegers\\Agent\\Agent' => __DIR__ . '/..' . '/jenssegers/agent/src/Agent.php',
+        'Jenssegers\\Agent\\AgentServiceProvider' => __DIR__ . '/..' . '/jenssegers/agent/src/AgentServiceProvider.php',
+        'Jenssegers\\Agent\\Facades\\Agent' => __DIR__ . '/..' . '/jenssegers/agent/src/Facades/Agent.php',
         'Laravel\\Breeze\\BreezeServiceProvider' => __DIR__ . '/..' . '/laravel/breeze/src/BreezeServiceProvider.php',
         'Laravel\\Breeze\\Console\\InstallCommand' => __DIR__ . '/..' . '/laravel/breeze/src/Console/InstallCommand.php',
         'Laravel\\Breeze\\Console\\InstallsApiStack' => __DIR__ . '/..' . '/laravel/breeze/src/Console/InstallsApiStack.php',
@@ -2807,6 +2847,7 @@ class ComposerStaticInit82a80a3f9c5af76752c3606d0e466861
         'League\\MimeTypeDetection\\GeneratedExtensionToMimeTypeMap' => __DIR__ . '/..' . '/league/mime-type-detection/src/GeneratedExtensionToMimeTypeMap.php',
         'League\\MimeTypeDetection\\MimeTypeDetector' => __DIR__ . '/..' . '/league/mime-type-detection/src/MimeTypeDetector.php',
         'League\\MimeTypeDetection\\OverridingExtensionToMimeTypeMap' => __DIR__ . '/..' . '/league/mime-type-detection/src/OverridingExtensionToMimeTypeMap.php',
+        'Mobile_Detect' => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/Mobile_Detect.php',
         'Monolog\\Attribute\\AsMonologProcessor' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Attribute/AsMonologProcessor.php',
         'Monolog\\Attribute\\WithMonologChannel' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Attribute/WithMonologChannel.php',
         'Monolog\\DateTimeImmutable' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/DateTimeImmutable.php',
@@ -5057,6 +5098,7 @@ class ComposerStaticInit82a80a3f9c5af76752c3606d0e466861
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit82a80a3f9c5af76752c3606d0e466861::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit82a80a3f9c5af76752c3606d0e466861::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit82a80a3f9c5af76752c3606d0e466861::$prefixesPsr0;
             $loader->classMap = ComposerStaticInit82a80a3f9c5af76752c3606d0e466861::$classMap;
 
         }, null, ClassLoader::class);
