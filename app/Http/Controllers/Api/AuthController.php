@@ -112,10 +112,12 @@ class AuthController extends Controller
                 $request->user()->email
             )
             ->select(
-                'users.*',
-                'employees.employee_code',
-                'employees.designation',
-                'employees.department'
+                'users.id',
+                'users.email',
+                'users.name',
+                'users.phone',
+                'employees.*',
+                
             )
             ->first();
 

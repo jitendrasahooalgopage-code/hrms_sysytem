@@ -525,10 +525,13 @@ class ComposerStaticInit82a80a3f9c5af76752c3606d0e466861
     );
 
     public static $classMap = array (
+        'App\\Console\\Commands\\CheckEmployeeBirthdays' => __DIR__ . '/../..' . '/app/Console/Commands/CheckEmployeeBirthdays.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Http\\Controllers\\AdminController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdminController.php',
         'App\\Http\\Controllers\\Api\\AuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/AuthController.php',
+        'App\\Http\\Controllers\\Api\\LeaveController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/LeaveController.php',
+        'App\\Http\\Controllers\\AssetRequestController' => __DIR__ . '/../..' . '/app/Http/Controllers/AssetRequestController.php',
         'App\\Http\\Controllers\\AttendanceController' => __DIR__ . '/../..' . '/app/Http/Controllers/AttendanceController.php',
         'App\\Http\\Controllers\\Auth\\AuthenticatedSessionController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/AuthenticatedSessionController.php',
         'App\\Http\\Controllers\\Auth\\ConfirmablePasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ConfirmablePasswordController.php',
@@ -590,6 +593,8 @@ class ComposerStaticInit82a80a3f9c5af76752c3606d0e466861
         'App\\Http\\Requests\\UpdateRoleRequest' => __DIR__ . '/../..' . '/app/Http/Requests/UpdateRoleRequest.php',
         'App\\Http\\Requests\\UpdateSalaryRequest' => __DIR__ . '/../..' . '/app/Http/Requests/UpdateSalaryRequest.php',
         'App\\Http\\Requests\\UpdateScheduleRequest' => __DIR__ . '/../..' . '/app/Http/Requests/UpdateScheduleRequest.php',
+        'App\\Mail\\AssetRequestSubmitted' => __DIR__ . '/../..' . '/app/Mail/AssetRequestSubmitted.php',
+        'App\\Models\\AssetRequest' => __DIR__ . '/../..' . '/app/Models/AssetRequest.php',
         'App\\Models\\Attendance' => __DIR__ . '/../..' . '/app/Models/Attendance.php',
         'App\\Models\\Check' => __DIR__ . '/../..' . '/app/Models/Check.php',
         'App\\Models\\Depart' => __DIR__ . '/../..' . '/app/Models/Depart.php',

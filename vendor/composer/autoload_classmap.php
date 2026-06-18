@@ -6,10 +6,13 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Console\\Commands\\CheckEmployeeBirthdays' => $baseDir . '/app/Console/Commands/CheckEmployeeBirthdays.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
     'App\\Http\\Controllers\\AdminController' => $baseDir . '/app/Http/Controllers/AdminController.php',
     'App\\Http\\Controllers\\Api\\AuthController' => $baseDir . '/app/Http/Controllers/Api/AuthController.php',
+    'App\\Http\\Controllers\\Api\\LeaveController' => $baseDir . '/app/Http/Controllers/Api/LeaveController.php',
+    'App\\Http\\Controllers\\AssetRequestController' => $baseDir . '/app/Http/Controllers/AssetRequestController.php',
     'App\\Http\\Controllers\\AttendanceController' => $baseDir . '/app/Http/Controllers/AttendanceController.php',
     'App\\Http\\Controllers\\Auth\\AuthenticatedSessionController' => $baseDir . '/app/Http/Controllers/Auth/AuthenticatedSessionController.php',
     'App\\Http\\Controllers\\Auth\\ConfirmablePasswordController' => $baseDir . '/app/Http/Controllers/Auth/ConfirmablePasswordController.php',
@@ -71,6 +74,8 @@ return array(
     'App\\Http\\Requests\\UpdateRoleRequest' => $baseDir . '/app/Http/Requests/UpdateRoleRequest.php',
     'App\\Http\\Requests\\UpdateSalaryRequest' => $baseDir . '/app/Http/Requests/UpdateSalaryRequest.php',
     'App\\Http\\Requests\\UpdateScheduleRequest' => $baseDir . '/app/Http/Requests/UpdateScheduleRequest.php',
+    'App\\Mail\\AssetRequestSubmitted' => $baseDir . '/app/Mail/AssetRequestSubmitted.php',
+    'App\\Models\\AssetRequest' => $baseDir . '/app/Models/AssetRequest.php',
     'App\\Models\\Attendance' => $baseDir . '/app/Models/Attendance.php',
     'App\\Models\\Check' => $baseDir . '/app/Models/Check.php',
     'App\\Models\\Depart' => $baseDir . '/app/Models/Depart.php',

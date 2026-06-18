@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\LeaveController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +19,18 @@ use App\Http\Controllers\Api\AuthController;
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group( function () {
+    
     Route::get('/profile', [AuthController::class, 'profile']);
 
     Route::post('/logout', [AuthController::class, 'logout']);
+
+     Route::get('/leaves', [LeaveController::class, 'index']);
+
+    Route::get('/leave-details/{id}', [LeaveController::class, 'show']);
+
+    Route::post('/leaves', [LeaveController::class, 'store']);
+
+    Route::put('/leaves/{id}', [LeaveController::class, 'update']);
+
+    Route::delete('/leaves/{id}', [LeaveController::class, 'destroy']);
 });
