@@ -47,6 +47,8 @@ public function store(Request $request)
         $assetDetails[] = [
             'asset' => $asset,
             'qty' => $request->qty[$asset] ?? 1,
+                    'items' => $request->asset_details[$asset] ?? []
+
         ];
     }
 
@@ -88,16 +90,28 @@ public function update(Request $request, $id)
 {
     $request->validate([
         'employee_id' => 'required',
-        'assets' => 'required|array',
+        'assets'      => 'required|array',
+        'status'      => 'required|string',
     ]);
 
     $assetDetails = [];
 
     foreach ($request->assets as $asset) {
+        $rawItems = $request->asset_details[$asset] ?? [];
+        $sanitizedItems = [];
+
+        // Clean up nested item array values and force integer conversions where needed
+        foreach ($rawItems as $item) {
+            if (isset($item['plan_days'])) {
+                $item['plan_days'] = (int) $item['plan_days'];
+            }
+            $sanitizedItems[] = $item;
+        }
 
         $assetDetails[] = [
             'asset' => $asset,
-            'qty' => $request->qty[$asset] ?? 1,
+            'qty'   => (int) ($request->qty[$asset] ?? 1),
+            'items' => $sanitizedItems
         ];
     }
 
@@ -106,7 +120,7 @@ public function update(Request $request, $id)
     $employeeAsset->update([
         'employee_id'   => $request->employee_id,
         'asset_name'    => implode(',', $request->assets),
-        'asset_details' => $assetDetails,
+        'asset_details' => $assetDetails, // Automatically encoded if asset_details is cast to 'array' or 'json' in the Model
         'message'       => $request->message,
         'status'        => $request->status,
     ]);
