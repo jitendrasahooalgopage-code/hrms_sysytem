@@ -19,6 +19,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeeAssetController;
 use App\Http\Controllers\AssetRequestController;
+use App\Http\Controllers\UserAttendanceController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -95,6 +96,12 @@ Route::get(
     Route::get('/{id}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
     Route::put('/{id}', [UserController::class, 'update'])->name('admin.users.update');
     Route::delete('/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+
+
+     Route::post('checkin',  [UserAttendanceController::class, 'checkin'])->name('checkin');
+    Route::post('checkout', [UserAttendanceController::class, 'checkout'])->name('checkout');
+    Route::get('status',    [UserAttendanceController::class, 'status'])->name('status');
+    Route::get('history',   [UserAttendanceController::class, 'history'])->name('history');
 });
 
 // ─────────────────────────────────────────────
@@ -103,6 +110,8 @@ Route::get(
 Route::middleware('admin')->prefix('admin')->group(function () {
 
     Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
+
+    
 
     Route::prefix('department')->group(function () {
         Route::get('/', [DepartmentController::class, 'index'])->name('admin.department.index');
