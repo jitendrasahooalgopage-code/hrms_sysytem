@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeeAssetController;
 use App\Http\Controllers\AssetRequestController;
 use App\Http\Controllers\UserAttendanceController;
+use App\Http\Controllers\AdminAttendanceController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -102,6 +103,11 @@ Route::get(
     Route::post('checkout', [UserAttendanceController::class, 'checkout'])->name('checkout');
     Route::get('status',    [UserAttendanceController::class, 'status'])->name('status');
     Route::get('history',   [UserAttendanceController::class, 'history'])->name('history');
+
+    Route::get   ('attendance-list',                   [AdminAttendanceController::class, 'index'])         ->name('attendance-list.index');
+    Route::get   ('attendance-list/{attendance_log}',  [AdminAttendanceController::class, 'show'])          ->name('attendance-list.show');
+    Route::delete('attendance-list/{attendance_log}',  [AdminAttendanceController::class, 'destroy'])       ->name('attendance-list.destroy');
+    Route::patch ('attendance-list/{attendance_log}/force-checkout', [AdminAttendanceController::class, 'forceCheckout']) ->name('attendance-list.force-checkout');
 });
 
 // ─────────────────────────────────────────────

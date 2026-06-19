@@ -45,14 +45,7 @@
     {{-- Employee Management --}}
     <li class="sidebar-header">{{ __('Employee Management') }}</li>
 
-    <li class="sidebar-item">
-        <a class="sidebar-link" href="{{ route('employee-assets.index') }}">
-            <i class="fa-solid fa-laptop"></i>
-            <span class="align-middle">{{ __('Asset Management') }}</span>
-        </a>
-    </li>
-
-    <li class="sidebar-item">
+     <li class="sidebar-item">
         <a class="sidebar-link"
            href="{{ Auth::user()->role->slug === 'super-admin'
                     ? route('employee.index')
@@ -63,6 +56,15 @@
             <span class="align-middle">{{ __('Manage Employees') }}</span>
         </a>
     </li>
+
+    <li class="sidebar-item">
+        <a class="sidebar-link" href="{{ route('employee-assets.index') }}">
+            <i class="fa-solid fa-laptop"></i>
+            <span class="align-middle">{{ __('Asset Management') }}</span>
+        </a>
+    </li>
+
+   
 
     {{-- Settings --}}
 <li class="sidebar-header">{{ __('Organization Management') }}</li>
@@ -96,11 +98,23 @@
         <li class="sidebar-header">{{ __('Attendance Management') }}</li>
       {{-- @endif
 
+
+      
+
+      
+
       @if (Auth::check() && (Auth::user()->role->slug === 'super-admin' || Auth::user()->role->slug === 'administrator' || Auth::user()->role->slug === 'moderator')) --}}
         <li class="sidebar-item">
         <a class="sidebar-link" href="{{ Auth::user()->role->slug === 'super-admin' ? route('schedule.index') : (Auth::user()->role->slug === 'administrator' ? route('admin.schedule.index') : route('moderator.schedule.index') ) }}">
           <i class="fa-solid fa-clock"></i>
           <span class="align-middle">{{ __('Schedule') }}</span>
+        </a>
+        </li>
+
+        <li class="sidebar-item">
+        <a class="sidebar-link" href="{{ Auth::user()->role->slug === 'super-admin' ? route('attendance-list.index') : (Auth::user()->role->slug === 'administrator' ? route('admin.attendance-list.index') : route('moderator.attendance-list.index') ) }}">
+          <i class="fa-solid fa-clock"></i>
+          <span class="align-middle">{{ __('Check Daily Attendance') }}</span>
         </a>
         </li>
       {{-- @endif
@@ -173,7 +187,7 @@
          (Auth::user()->role->slug === 'administrator' ? route('admin.leaves.create') :
          (Auth::user()->role->slug === 'employee' ? route('employee.leaves.create') : route('hr.leaves.create'))  ) }}">
           <i class="fa-solid fa-file-pen"></i>
-          <span class="align-middle">{{ __('Registration') }}</span>
+          <span class="align-middle">{{ __('Apply Leave') }}</span>
         </a>
         </li>
       @endif

@@ -58,6 +58,7 @@ class EmployeeController extends Controller
 
     public function store(StoreEmployeeRequest $request)
     {
+        // dd($request->all());
         $data = $request->except([
             '_token',
             'basic',

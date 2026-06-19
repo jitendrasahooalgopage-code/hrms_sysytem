@@ -42,7 +42,8 @@ class Employee extends Model
         'salary_slip_1',
         'salary_slip_2',
         'salary_slip_3',
-        'bank_passbook_page'
+        'bank_passbook_page',
+        'emp_status'
     ];
 // Define relationships
     public function user(): BelongsTo {

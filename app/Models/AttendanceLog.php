@@ -28,6 +28,8 @@ class AttendanceLog extends Model
         'browser',
         'platform',
         'user_agent',
+        'checkout_status',
+        'checkin_status'
     ];
 
     protected $casts = [
@@ -55,16 +57,14 @@ class AttendanceLog extends Model
     /**
      * Get the session duration as a human-readable string.
      */
-    public function getFormattedDurationAttribute(): ?string
+   public function getFormattedDurationAttribute(): string
     {
-        if (is_null($this->session_duration)) {
-            return null;
-        }
-
-        $hours   = intdiv($this->session_duration, 3600);
-        $minutes = intdiv($this->session_duration % 3600, 60);
-        $seconds = $this->session_duration % 60;
-
-        return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+        if (!$this->session_duration) return '—';
+        $h = intdiv($this->session_duration, 3600);
+        $m = intdiv($this->session_duration % 3600, 60);
+        $s = $this->session_duration % 60;
+        if ($h > 0) return "{$h}h {$m}m";
+        if ($m > 0) return "{$m}m {$s}s";
+        return "{$s}s";
     }
 }

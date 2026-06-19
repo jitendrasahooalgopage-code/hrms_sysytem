@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\LeaveController;
+use App\Http\Controllers\Api\UserAttendanceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,4 +34,11 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::put('/leaves/{id}', [LeaveController::class, 'update']);
 
     Route::delete('/leaves/{id}', [LeaveController::class, 'destroy']);
+
+    
+    Route::post('checkin',  [UserAttendanceController::class, 'checkin']) ->name('checkin');
+    Route::post('checkout', [UserAttendanceController::class, 'checkout'])->name('checkout');
+    Route::get('status',    [UserAttendanceController::class, 'status'])  ->name('status');
+    Route::get('today',     [UserAttendanceController::class, 'today'])   ->name('today');
+    Route::get('history',   [UserAttendanceController::class, 'history']) ->name('history');
 });
