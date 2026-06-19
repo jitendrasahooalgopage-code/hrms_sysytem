@@ -60,56 +60,83 @@
                         </td>
 
                         <td>
-
                             @if($asset->asset_details)
+                                @php
+                                    // Ensure array conversion if not cast automatically by the Model
+                                    $details = is_string($asset->asset_details) ? json_decode($asset->asset_details, true) : $asset->asset_details;
+                                @endphp
 
-                                @foreach($asset->asset_details as $item)
+                                @foreach($details as $item)
+                                    <div class="mb-2 pb-2 @if(!$loop->last) border-bottom border-light @endif">
+                                        <div class="d-flex flex-wrap align-items-center gap-1 mb-1">
+                                            <span class="badge bg-primary">
+                                                {{ $item['asset'] ?? $asset->asset_name }}
+                                            </span>
+                                            <span class="badge bg-secondary">
+                                                Qty: {{ $item['qty'] ?? 1 }}
+                                            </span>
+                                        </div>
 
-                                    <span class="badge bg-primary">
-                                        {{ $item['asset'] }}
-                                    </span>
+                                        @if(!empty($item['items']))
+                                            <div class="ps-2 mt-1 text-muted row g-1" style="font-size: 0.825rem; max-width: 450px;">
+                                                @foreach($item['items'] as $index => $subItem)
+                                                    <div class="col-12 d-flex flex-wrap align-items-center gap-1">
+                                                        <span class="text-secondary font-monospace fw-bold">#{{ $index + 1 }}:</span>
+                                                        
+                                                        @if(isset($subItem['serial_no']))
+                                                            <span class="bg-light px-2 py-0.5 rounded border small text-dark">SN: <strong class="font-monospace">{{ $subItem['serial_no'] }}</strong></span>
+                                                        @endif
 
-                                    <span class="badge bg-secondary">
-                                        Qty: {{ $item['qty'] }}
-                                    </span>
+                                                        @if(isset($subItem['cpu_serial_no']))
+                                                            <span class="bg-light px-2 py-0.5 rounded border small text-dark">CPU: <strong class="font-monospace">{{ $subItem['cpu_serial_no'] }}</strong></span>
+                                                        @endif
 
-                                    <br>
+                                                        @if(isset($subItem['monitor_serial_no']))
+                                                            <span class="bg-light px-2 py-0.5 rounded border small text-dark">Mon: <strong class="font-monospace">{{ $subItem['monitor_serial_no'] }}</strong></span>
+                                                        @endif
 
+                                                        @if(isset($subItem['imei']))
+                                                            <span class="bg-light px-2 py-0.5 rounded border small text-dark">IMEI: <strong class="font-monospace">{{ $subItem['imei'] }}</strong></span>
+                                                        @endif
+
+                                                        @if(isset($subItem['sim_provider']))
+                                                            <span class="bg-light px-2 py-0.5 rounded border small text-dark">SIM: <strong>{{ $subItem['sim_provider'] }}</strong></span>
+                                                        @endif
+
+                                                        @if(isset($subItem['plan_days']))
+                                                            <span class="bg-light px-2 py-0.5 rounded border small text-dark">Plan: <strong>{{ $subItem['plan_days'] }} Days</strong></span>
+                                                        @endif
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        @endif
+                                    </div>
                                 @endforeach
-
                             @else
-
                                 <span class="badge bg-primary">
                                     {{ $asset->asset_name }}
                                 </span>
-
                             @endif
-
                         </td>
 
                         <td>
-
                             @if($asset->status == 'Assigned')
                                 <span class="badge bg-success">
                                     Assigned
                                 </span>
-
                             @elseif($asset->status == 'Returned')
                                 <span class="badge bg-info">
                                     Returned
                                 </span>
-
                             @elseif($asset->status == 'Damaged')
                                 <span class="badge bg-warning">
                                     Damaged
                                 </span>
-
                             @else
                                 <span class="badge bg-danger">
                                     Lost
                                 </span>
                             @endif
-
                         </td>
 
                         <td>
@@ -184,7 +211,6 @@
         background-color: #f8fafc;
     }
 
-    /* Edit Interaction State Profile Rules */
     .btn-light-edit {
         color: #0284c7;
         border-color: #e0f2fe;
@@ -195,7 +221,6 @@
         box-shadow: 0 4px 6px -1px rgba(2, 132, 199, 0.2);
     }
 
-    /* Requests Log Interaction State Profile Rules */
     .btn-light-requests {
         color: #d97706;
         border-color: #fef3c7;
@@ -206,7 +231,6 @@
         box-shadow: 0 4px 6px -1px rgba(217, 119, 6, 0.2);
     }
 
-    /* Delete Action Interaction State Profile Rules */
     .btn-light-delete {
         color: #dc2626;
         border-color: #fee2e2;
@@ -222,7 +246,6 @@
 
 @section('script')
 <script>
-    // Bootstrapping engine initialization scripts for responsive tooltips
     document.addEventListener('DOMContentLoaded', function () {
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {

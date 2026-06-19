@@ -1,7 +1,7 @@
 <aside id="sidebar" class="sidebar js-sidebar">
   <div class="sidebar-content js-simplebar">
     <a class="sidebar-brand" href="index.html">
-      <span class="align-middle">HRMS</span>
+      <span class="align-middle">ALGOPAGE HRMS</span>
     </a>
 
     <ul class="sidebar-nav">
@@ -36,51 +36,64 @@
         </li> 
       @endif
         
-      @if (Auth::check() && (Auth::user()->role->slug === 'super-admin' || Auth::user()->role->slug === 'administrator' || Auth::user()->role->slug === 'hr-manager'))
-        <li class="sidebar-header">{{ __('Employee Management') }}</li>
-      {{-- @endif
+     @if (Auth::check() && (
+    Auth::user()->role->slug === 'super-admin' ||
+    Auth::user()->role->slug === 'administrator' ||
+    Auth::user()->role->slug === 'hr-manager'
+))
 
-       @if (Auth::check() && (Auth::user()->role->slug === 'super-admin' || Auth::user()->role->slug === 'administrator' || Auth::user()->role->slug === 'hr-manager')) --}}
-       <li class="sidebar-item">
-    <a class="sidebar-link"
-       href="{{ route('employee-assets.index') }}">
-        <i class="fa-solid fa-users-viewfinder"></i>
-        <span class="align-middle">
-            {{ __('Asset Management') }}
-        </span>
-    </a>
-</li>
-      {{-- @endif
+    {{-- Employee Management --}}
+    <li class="sidebar-header">{{ __('Employee Management') }}</li>
 
-      @if (Auth::check() && (Auth::user()->role->slug === 'super-admin' || Auth::user()->role->slug === 'administrator' || Auth::user()->role->slug === 'hr-manager')) --}}
-        <li class="sidebar-item">
-        <a class="sidebar-link" href="{{ Auth::user()->role->slug === 'super-admin' ? route('employee.index') : (Auth::user()->role->slug === 'administrator' ? route('admin.employee.index') : route('hr.employee.index') ) }}">
-          <i class="fa-solid fa-users-viewfinder"></i>
-          <span class="align-middle">{{ __('Manage Employees') }}</span>
+    <li class="sidebar-item">
+        <a class="sidebar-link" href="{{ route('employee-assets.index') }}">
+            <i class="fa-solid fa-laptop"></i>
+            <span class="align-middle">{{ __('Asset Management') }}</span>
         </a>
-        </li>
-      {{-- @endif
+    </li>
 
-      @if (Auth::check() && (Auth::user()->role->slug === 'super-admin' || Auth::user()->role->slug === 'administrator' || Auth::user()->role->slug === 'hr-manager')) --}}
-        <li class="sidebar-item">
-        <a class="sidebar-link" href="{{ Auth::user()->role->slug === 'super-admin' ? route('department.index') : (Auth::user()->role->slug === 'administrator' ? route('admin.department.index') : route('hr.department.index') ) }}">
-          <i class="fa-solid fa-users-gear"></i>
-          <span class="align-middle">{{ __('Manage Departments') }}</span>
+    <li class="sidebar-item">
+        <a class="sidebar-link"
+           href="{{ Auth::user()->role->slug === 'super-admin'
+                    ? route('employee.index')
+                    : (Auth::user()->role->slug === 'administrator'
+                        ? route('admin.employee.index')
+                        : route('hr.employee.index')) }}">
+            <i class="fa-solid fa-users-viewfinder"></i>
+            <span class="align-middle">{{ __('Manage Employees') }}</span>
         </a>
-        </li>
-      {{-- @endif
-      
-      @if (Auth::check() && (Auth::user()->role->slug === 'super-admin' || Auth::user()->role->slug === 'administrator' || Auth::user()->role->slug === 'hr-manager')) --}}
-        <li class="sidebar-item">
-        <a class="sidebar-link" href="{{ Auth::user()->role->slug === 'super-admin' ? route('designation.index') : (Auth::user()->role->slug === 'administrator' ? route('admin.designation.index') : route('hr.designation.index') ) }}">
-          <i class="fa-solid fa-file-lines"></i>
-          <span class="align-middle">{{ __('Manage Designations') }}</span>
+    </li>
+
+    {{-- Settings --}}
+<li class="sidebar-header">{{ __('Organization Management') }}</li>
+    <li class="sidebar-item">
+        <a class="sidebar-link"
+           href="{{ Auth::user()->role->slug === 'super-admin'
+                    ? route('department.index')
+                    : (Auth::user()->role->slug === 'administrator'
+                        ? route('admin.department.index')
+                        : route('hr.department.index')) }}">
+            <i class="fa-solid fa-building"></i>
+            <span class="align-middle">{{ __('Manage Departments') }}</span>
         </a>
-        </li>
-      @endif
+    </li>
+
+    <li class="sidebar-item">
+        <a class="sidebar-link"
+           href="{{ Auth::user()->role->slug === 'super-admin'
+                    ? route('designation.index')
+                    : (Auth::user()->role->slug === 'administrator'
+                        ? route('admin.designation.index')
+                        : route('hr.designation.index')) }}">
+            <i class="fa-solid fa-user-tie"></i>
+            <span class="align-middle">{{ __('Manage Designations') }}</span>
+        </a>
+    </li>
+
+@endif
 
       @if (Auth::check() && (Auth::user()->role->slug === 'super-admin' || Auth::user()->role->slug === 'administrator' || Auth::user()->role->slug === 'moderator'))
-        <li class="sidebar-header">{{ __('Attendance') }}</li>
+        <li class="sidebar-header">{{ __('Attendance Management') }}</li>
       {{-- @endif
 
       @if (Auth::check() && (Auth::user()->role->slug === 'super-admin' || Auth::user()->role->slug === 'administrator' || Auth::user()->role->slug === 'moderator')) --}}
@@ -240,6 +253,9 @@
         </a>
       </li> --}}
       
+      
     </ul>
+
+    
   </div>
 </aside>
