@@ -21,6 +21,7 @@ use App\Http\Controllers\EmployeeAssetController;
 use App\Http\Controllers\AssetRequestController;
 use App\Http\Controllers\UserAttendanceController;
 use App\Http\Controllers\AdminAttendanceController;
+use App\Http\Controllers\NotificationController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -108,6 +109,19 @@ Route::get(
     Route::get   ('attendance-list/{attendance_log}',  [AdminAttendanceController::class, 'show'])          ->name('attendance-list.show');
     Route::delete('attendance-list/{attendance_log}',  [AdminAttendanceController::class, 'destroy'])       ->name('attendance-list.destroy');
     Route::patch ('attendance-list/{attendance_log}/force-checkout', [AdminAttendanceController::class, 'forceCheckout']) ->name('attendance-list.force-checkout');
+
+    Route::get('notifications',[NotificationController::class,'index'])->name('notifications.index');
+    Route::get('notifications/create',[NotificationController::class,'create'])->name('notifications.create');
+    
+
+    Route::delete('notifications', [NotificationController::class,'delete'])->name('notifications.delete');
+
+
+
+    Route::post('notifications/send',[NotificationController::class,'send'])->name('notifications.send');
+
+
+    Route::get('notifications/history',[NotificationController::class,'history'])->name('notifications.history');
 });
 
 // ─────────────────────────────────────────────
@@ -287,6 +301,7 @@ Route::middleware('hr')->prefix('hr-manager')->group(function () {
         Route::get('/{id}/edit', [EmployeeController::class, 'edit'])->name('hr.employee.edit');
         Route::put('/{id}', [EmployeeController::class, 'update'])->name('hr.employee.update');
         Route::delete('/{id}', [EmployeeController::class, 'destroy'])->name('hr.employee.destroy');
+        // Route::get('notifications/read/{id}',[NotificationController::class,'read'])->name('hr.notifications.read');
     });
 
     Route::prefix('leaves')->group(function () {
@@ -317,6 +332,7 @@ Route::middleware('payroll')->prefix('manager')->group(function () {
 
     Route::post('/calculate', [PayrollController::class, 'calculatePayroll'])->name('manager.calculate.payroll');
 });
+Route::get('notification/read/{id}',[NotificationController::class,'read'])->name('notification.read');
 
 // ─────────────────────────────────────────────
 // AUTH (profile)

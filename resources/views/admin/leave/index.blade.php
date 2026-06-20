@@ -149,6 +149,7 @@
                                             {{-- Approve --}}
                                             <form
                                                 action="{{ match ($role) {
+
                                                     'super-admin' => route('leaves.approve', $leave->id),
                                                     'hr' => route('hr.leaves.approve', $leave->id),
                                                     'team-lead' => route('team-lead.leaves.approve', $leave->id),

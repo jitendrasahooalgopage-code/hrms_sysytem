@@ -117,6 +117,13 @@
           <span class="align-middle">{{ __('Check Daily Attendance') }}</span>
         </a>
         </li>
+
+        <li class="sidebar-item">
+        <a class="sidebar-link" href="{{ Auth::user()->role->slug === 'super-admin' ? route('notifications.index') : (Auth::user()->role->slug === 'administrator' ? route('admin.notifications.index') : route('moderator.notifications.index') ) }}">
+          <i class="fa-solid fa-clock"></i>
+          <span class="align-middle">{{ __('Notification Settings') }}</span>
+        </a>
+        </li>
       {{-- @endif
       
       @if (Auth::check() && (Auth::user()->role->slug === 'super-admin' || Auth::user()->role->slug === 'administrator' || Auth::user()->role->slug === 'moderator')) --}}
