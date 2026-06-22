@@ -22,6 +22,7 @@ use App\Http\Controllers\AssetRequestController;
 use App\Http\Controllers\UserAttendanceController;
 use App\Http\Controllers\AdminAttendanceController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\UserNotificationController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -122,6 +123,25 @@ Route::get(
 
 
     Route::get('notifications/history',[NotificationController::class,'history'])->name('notifications.history');
+
+    Route::get('user-notifications',[UserNotificationController::class,'index'])->name('user-notifications.index');
+    Route::get('user-notifications/show',[UserNotificationController::class,'show'])->name('user-notifications.show');
+    Route::get('user-notifications/create',[UserNotificationController::class,'create'])->name('user-notifications.create');
+    Route::post('user-notifications/store',[UserNotificationController::class,'store'])->name('user-notifications.store');
+    Route::post('user-notifications/send-now',[UserNotificationController::class,'sendNow'])->name('user-notifications.sendNow');
+
+    Route::delete('user-notifications/destroy',[UserNotificationController::class,'destroy'])->name('user-notifications.destroy');
+
+    Route::get('user-notifications/edit',[UserNotificationController::class,'edit'])->name('user-notifications.edit');
+
+    Route::get('user-notifications/duplicate',[UserNotificationController::class,'duplicate'])->name('user-notifications.duplicate');
+
+    
+
+
+
+
+
 });
 
 // ─────────────────────────────────────────────

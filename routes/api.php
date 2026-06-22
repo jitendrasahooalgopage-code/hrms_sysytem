@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\LeaveController;
 use App\Http\Controllers\Api\UserAttendanceController;
+use App\Http\Controllers\Api\AppNotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,4 +42,13 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('status',    [UserAttendanceController::class, 'status'])  ->name('status');
     Route::get('today',     [UserAttendanceController::class, 'today'])   ->name('today');
     Route::get('history',   [UserAttendanceController::class, 'history']) ->name('history');
+
+    Route::get('app-notification', [AppNotificationController::class, 'index']);
+    Route::get('/unread-count', [AppNotificationController::class, 'unreadCount']);
+        
+        // Full Lifecycle Tracking Telemetry
+    Route::post('/track-delivery', [AppNotificationController::class, 'trackDelivery']);
+    Route::post('/{id}/read', [AppNotificationController::class, 'markAsRead']);
+    Route::post('/{id}/dismiss', [AppNotificationController::class, 'dismiss']);
+    Route::post('/read-all', [AppNotificationController::class, 'markAllAsRead']);
 });

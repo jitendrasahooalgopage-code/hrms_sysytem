@@ -64,6 +64,13 @@
         </a>
     </li>
 
+     <li class="sidebar-item">
+        <a class="sidebar-link" href="{{ route('user-notifications.index') }}">
+            <i class="fa-solid fa-laptop"></i>
+            <span class="align-middle">{{ __('User Notification Management') }}</span>
+        </a>
+    </li>
+
    
 
     {{-- Settings --}}
@@ -128,7 +135,8 @@
       
       @if (Auth::check() && (Auth::user()->role->slug === 'super-admin' || Auth::user()->role->slug === 'administrator' || Auth::user()->role->slug === 'moderator')) --}}
         <li class="sidebar-item">
-        <a class="sidebar-link" href="{{ Auth::user()->role->slug === 'super-admin' ? route('attendance.index') : (Auth::user()->role->slug === 'administrator' ? route('admin.attendance.index') : route('moderator.attendance.index') ) }}">
+        <a class="sidebar-link" href="{{ Auth::user()->role->slug === 'super-admin' ? route('attendance.index') : 
+        (Auth::user()->role->slug === 'administrator' ? route('admin.attendance.index') : route('moderator.attendance.index') ) }}">
           <i class="fa-solid fa-calendar-days"></i>
           <span class="align-middle">{{ __('Daily Attendance') }}</span>
         </a>
