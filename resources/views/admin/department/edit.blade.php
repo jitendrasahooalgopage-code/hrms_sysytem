@@ -15,6 +15,7 @@
         <form action="{{ Auth::user()->role->slug === 'super-admin' ? route('department.update', $department->id) : ( Auth::user()->role->slug === 'administrator' ? route('admin.department.update', $department->id) : route('hr.department.update', $department->id) ) }}" method="post">
           @csrf
           @method('put')
+           <input type="hidden" name="id" value="{{ $department->id }}">
           <div class="card flex-fill">
             <div class="card-header">
               <h5 class="card-title mb-0">{{ __('Update Existing Department') }}</h5>

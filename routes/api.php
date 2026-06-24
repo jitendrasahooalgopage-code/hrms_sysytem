@@ -51,4 +51,6 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::post('/{id}/read', [AppNotificationController::class, 'markAsRead']);
     Route::post('/{id}/dismiss', [AppNotificationController::class, 'dismiss']);
     Route::post('/read-all', [AppNotificationController::class, 'markAllAsRead']);
+
+    Route::get('/get-all-employees', [AuthController::class, 'getAllEmployees']);
 });

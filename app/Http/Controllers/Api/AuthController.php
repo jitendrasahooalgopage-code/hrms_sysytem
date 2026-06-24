@@ -131,4 +131,39 @@ class AuthController extends Controller
             'message' => 'no user info available'
         ], 404);
     }
+    public function getAllEmployees(Request $request)
+    {
+        
+
+            $user = User::leftJoin(
+                'employees',
+                'employees.user_id',
+                '=',
+                'users.id'
+            )
+            ->where(
+                'users.email',
+                $request->user()->email
+            )
+            ->orWhere(
+                'employees.emp_status','=','active'
+            )
+            ->select(
+                'users.id',
+                'users.email',
+                'users.name',
+                'users.phone',
+                'employees.*',
+                
+            )
+            ->get()->toArray();
+
+            return response()->json([
+                'user' => $user,
+                'message' => 'user information found!'
+            ]);
+        
+
+       
+    }
 }

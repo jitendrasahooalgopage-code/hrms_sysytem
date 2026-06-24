@@ -10,7 +10,8 @@
         "jenssegers/agent": "^2.6",
         "laravel/framework": "^10.48",
         "laravel/sanctum": "^3.3",
-        "laravel/tinker": "^2.9"
+        "laravel/tinker": "^2.9",
+        "phpoffice/phpspreadsheet": "^5.8"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.13",

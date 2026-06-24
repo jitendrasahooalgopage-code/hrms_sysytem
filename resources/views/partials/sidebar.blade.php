@@ -70,6 +70,18 @@
             <span class="align-middle">{{ __('User Notification Management') }}</span>
         </a>
     </li>
+    <li class="sidebar-item">
+        <a class="sidebar-link" href="{{ route('positions.index') }}">
+            <i class="fa-solid fa-laptop"></i>
+            <span class="align-middle">{{ __('Interview Management') }}</span>
+        </a>
+    </li>
+    <li class="sidebar-item">
+        <a class="sidebar-link" href="{{ route('applications.index') }}">
+            <i class="fa-solid fa-laptop"></i>
+            <span class="align-middle">{{ __('Application Management') }}</span>
+        </a>
+    </li>
 
    <li class="sidebar-header">
     {{ __('Inventory Management') }}
@@ -212,7 +224,8 @@
         </li> --}}
       @endif
       
-      @if (Auth::check() && (Auth::user()->role->slug === 'super-admin' || Auth::user()->role->slug === 'administrator' || Auth::user()->role->slug === 'hr-manager'
+      @if (Auth::check() && (Auth::user()->role->slug === 'super-admin' || Auth::user()->role->slug === 'administrator' ||
+       Auth::user()->role->slug === 'hr-manager'
       || Auth::user()->role->slug === 'employee'))
         <li class="sidebar-header">{{ __('Leave Management') }}</li>  
 
@@ -229,7 +242,7 @@
                : (
                   Auth::user()->role->slug === 'employee'
                      ? route('employee.leaves.index')
-                     : route('employee.leaves.create')
+                     : route('hr.leaves.index')
                )
            )  }}">
           <i class="fa-solid fa-person-walking-arrow-right"></i>
