@@ -42,37 +42,28 @@
                     </label>
 
                     <div class="row g-3">
-                        @php
-                            $availableAssets = [
-                                ['id' => 'laptop', 'value' => 'Laptop', 'emoji' => '💻', 'desc' => 'Workstations & Notebooks'],
-                                ['id' => 'desktop', 'value' => 'Desktop', 'emoji' => '🖥', 'desc' => 'Fixed office monitors & towers'],
-                                ['id' => 'mouse', 'value' => 'Mouse', 'emoji' => '🖱', 'desc' => 'Ergonomic or standard pointer devices'],
-                                ['id' => 'keyboard', 'value' => 'Keyboard', 'emoji' => '⌨', 'desc' => 'Mechanical or standard layout keyboards'],
-                                ['id' => 'mobile', 'value' => 'Mobile', 'emoji' => '📱', 'desc' => 'Company smartphones & testing devices']
-                            ];
-                        @endphp
-
-                        @foreach($availableAssets as $asset)
+                      @foreach($inventories as $asset)
                         <div class="col-md-6 col-lg-4">
                             <div class="card asset-card h-100 border border-light-subtle rounded-3 transition-all style-card-wrapper">
-                                <label class="card-body p-3.5 m-0 d-flex flex-column justify-content-between cursor-pointer style-label" for="{{ $asset['id'] }}">
+                                <label class="card-body p-3.5 m-0 d-flex flex-column justify-content-between cursor-pointer style-label" for="asset_{{ $asset->id }}">
                                     
                                     <div class="d-flex align-items-start justify-content-between mb-2">
                                         <div class="d-flex align-items-center gap-3">
                                             <span class="fs-3 bg-light rounded-3 p-2.5 d-inline-block line-height-1 icon-container shadow-sm">
-                                                {{ $asset['emoji'] }}
+                                                📦
                                             </span>
                                             <div>
-                                                <h6 class="mb-0 fw-bold text-dark card-asset-title">{{ $asset['value'] }}</h6>
-                                                <small class="text-muted d-block card-asset-desc" style="font-size: 0.75rem;">{{ $asset['desc'] }}</small>
+                                                <h6 class="mb-0 fw-bold text-dark card-asset-title">{{ $asset->asset_type }}</h6>
+                                                <small class="text-muted d-block card-asset-desc" style="font-size: 0.75rem;">ID: #{{ $asset->id }} — {{ $asset->message ?? 'No additional description' }}</small>
                                             </div>
                                         </div>
                                         <div class="form-check m-0 pointer-events-none custom-checkbox-wrapper">
                                             <input class="form-check-input asset-checkbox custom-check" 
                                                    type="checkbox" 
-                                                   name="assets[]" 
-                                                   value="{{ $asset['value'] }}" 
-                                                   id="{{ $asset['id'] }}">
+                                                   name="inventories[]" 
+                                                   value="{{ $asset->id }}" 
+                                                   data-asset-type="{{ $asset->asset_type }}"
+                                                   id="asset_{{ $asset->id }}">
                                         </div>
                                     </div>
 
@@ -87,7 +78,7 @@
                                                     </button>
                                                     <input type="number" 
                                                            class="form-control form-control-sm text-center fw-bold asset-qty-input custom-qty-field shadow-none font-monospace text-dark" 
-                                                           name="qty[{{ $asset['value'] }}]" 
+                                                           name="qty[{{ $asset->id }}]" 
                                                            min="1" 
                                                            value="1"
                                                            readonly
@@ -166,12 +157,11 @@
     .asset-card:hover { transform: translateY(-3px); box-shadow: 0 12px 20px -5px rgba(0, 0, 0, 0.08); border-color: #94a3b8 !important; }
     .icon-container { background-color: #f1f5f9 !important; border: 1px solid #e2e8f0; transition: background-color 0.2s ease; }
     
-    .asset-card.active-selected { border-color: #2563eb !important; background-color: #f8fafc; box-shadow: 0 4px 18 rgba(37, 99, 235, 0.08); }
+    .asset-card.active-selected { border-color: #2563eb !important; background-color: #f8fafc; box-shadow: 0 4px 18px rgba(37, 99, 235, 0.08); }
     .asset-card.active-selected .icon-container { background-color: #e0f2fe !important; border-color: #bae6fd; }
     .asset-card.active-selected .card-asset-title { color: #2563eb !important; }
     .custom-check { width: 1.2rem; height: 1.2rem; margin-top: 0.15rem; cursor: pointer; }
 
-    /* Custom Input Stepper Styling Blueprint */
     .custom-stepper-group {
         border: 1px solid #cbd5e1;
         border-radius: 6px;
@@ -203,7 +193,6 @@
         font-size: 0.9rem;
         height: 28px;
     }
-    /* Hide native spinner arrows */
     .custom-qty-field::-webkit-outer-spin-button,
     .custom-qty-field::-webkit-inner-spin-button {
         -webkit-appearance: none;
@@ -246,7 +235,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const btnMinus = qtyWrapper.querySelector('.btn-minus');
         const btnPlus = qtyWrapper.querySelector('.btn-plus');
 
-        // Checkbox State Engine Toggle
         checkbox.addEventListener('change', function() {
             if (this.checked) {
                 card.classList.add('active-selected');
@@ -267,10 +255,9 @@ document.addEventListener('DOMContentLoaded', function() {
             regenerateFields();
         });
 
-        // Stepper Control Event Interceptors
         btnMinus.addEventListener('click', function(e) {
             e.preventDefault();
-            e.stopPropagation(); // Avoid triggering card labels
+            e.stopPropagation();
             let currentVal = parseInt(qtyInput.value) || 1;
             if (currentVal > 1) {
                 qtyInput.value = currentVal - 1;
@@ -308,24 +295,26 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!checkbox.checked) return;
             activeCount++;
 
-            const assetType = checkbox.value;
+            // Using inventory record row ID as primary input binding
+            const inventoryId = checkbox.value;
+            const assetType = checkbox.getAttribute('data-asset-type');
             const card = checkbox.closest('.asset-card');
             const qty = parseInt(card.querySelector('.asset-qty-input').value) || 1;
             const icon = assetIcons[assetType] || '📦';
 
-            // 1. Add Sidebar Tracking Tree Nodes
+            // 1. Sidebar Allocation Node
             const sidebarNode = document.createElement('div');
             sidebarNode.className = 'sidebar-tree-node active-node';
             sidebarNode.innerHTML = `
                 <div class="d-flex align-items-center gap-2">
                     <span>${icon}</span>
-                    <span>${assetType}</span>
+                    <span>${assetType} ( #${inventoryId} )</span>
                 </div>
                 <span class="badge bg-primary rounded-pill font-monospace" style="font-size: 0.7rem;">x${qty}</span>
             `;
             sidebarList.appendChild(sidebarNode);
 
-            // 2. Add Horizontal Matrix Workspaces
+            // 2. Horizontal Form Card Container
             const colElement = document.createElement('div');
             colElement.className = 'col-12';
             
@@ -334,7 +323,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="card-header bg-white py-3 border-0 px-4">
                         <h6 class="mb-0 text-dark fw-bold d-flex align-items-center gap-2" style="font-size: 0.95rem;">
                             <span class="text-primary">${icon}</span>
-                            <span>${assetType} Specifications Portfolio</span>
+                            <span>${assetType} Allocation Specification portfolio</span>
                         </h6>
                     </div>
                     <div class="card-body bg-light bg-opacity-25 p-4">
@@ -354,33 +343,27 @@ document.addEventListener('DOMContentLoaded', function() {
                             <div class="row g-3">
                 `;
 
-                if (['Laptop', 'Mouse', 'Keyboard'].includes(assetType)) {
-                    htmlContent += `
-                        <div class="col-12">
-                            <label class="form-label small fw-bold text-muted mb-1" style="font-size: 0.78rem;">Serial Number <span class="text-danger">*</span></label>
-                            <input type="text" name="asset_details[${assetType}][${i}][serial_no]" class="form-control dynamic-field-control w-100" placeholder="Enter Serial Number" required>
-                        </div>
-                    `;
-                } else if (assetType === 'Desktop') {
+                // Comprehensive Dynamic Mapping Conditional Engine
+                if (assetType === 'Desktop') {
                     htmlContent += `
                         <div class="col-12">
                             <label class="form-label small fw-bold text-muted mb-1" style="font-size: 0.78rem;">CPU Serial Number <span class="text-danger">*</span></label>
-                            <input type="text" name="asset_details[${assetType}][${i}][cpu_serial_no]" class="form-control dynamic-field-control w-100" placeholder="Enter CPU Serial" required>
+                            <input type="text" name="asset_details[${inventoryId}][${i}][cpu_serial_no]" class="form-control dynamic-field-control w-100" placeholder="Enter CPU Serial" required>
                         </div>
                         <div class="col-12">
                             <label class="form-label small fw-bold text-muted mb-1" style="font-size: 0.78rem;">Monitor Serial Number <span class="text-danger">*</span></label>
-                            <input type="text" name="asset_details[${assetType}][${i}][monitor_serial_no]" class="form-control dynamic-field-control w-100" placeholder="Enter Monitor Serial" required>
+                            <input type="text" name="asset_details[${inventoryId}][${i}][monitor_serial_no]" class="form-control dynamic-field-control w-100" placeholder="Enter Monitor Serial" required>
                         </div>
                     `;
                 } else if (assetType === 'Mobile') {
                     htmlContent += `
                         <div class="col-md-6 col-12">
                             <label class="form-label small fw-bold text-muted mb-1" style="font-size: 0.78rem;">IMEI Number <span class="text-danger">*</span></label>
-                            <input type="text" name="asset_details[${assetType}][${i}][imei]" class="form-control dynamic-field-control w-100" placeholder="15-digit IMEI" required>
+                            <input type="text" name="asset_details[${inventoryId}][${i}][imei]" class="form-control dynamic-field-control w-100" placeholder="15-digit IMEI" required>
                         </div>
                         <div class="col-md-6 col-12">
                             <label class="form-label small fw-bold text-muted mb-1" style="font-size: 0.78rem;">SIM Provider <span class="text-danger">*</span></label>
-                            <select name="asset_details[${assetType}][${i}][sim_provider]" class="form-select dynamic-field-control w-100" required>
+                            <select name="asset_details[${inventoryId}][${i}][sim_provider]" class="form-select dynamic-field-control w-100" required>
                                 <option value="" disabled selected>Carrier</option>
                                 <option value="Airtel">Airtel</option>
                                 <option value="Jio">Jio</option>
@@ -391,9 +374,17 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="col-12">
                             <label class="form-label small fw-bold text-muted mb-1" style="font-size: 0.78rem;">Subscription Term <span class="text-danger">*</span></label>
                             <div class="input-group">
-                                <input type="number" name="asset_details[${assetType}][${i}][plan_days]" class="form-control dynamic-field-control rounded-start" min="1" placeholder="e.g. 84" required>
+                                <input type="number" name="asset_details[${inventoryId}][${i}][plan_days]" class="form-control dynamic-field-control rounded-start" min="1" placeholder="e.g. 84" required>
                                 <span class="input-group-text small bg-light border text-muted" style="font-size: 0.8rem; border-color: #cbd5e1;">Days</span>
                             </div>
+                        </div>
+                    `;
+                } else {
+                    // Universal Catch-All Fallback Rule (Bag, Headphone, Charger, Tablet, etc.)
+                    htmlContent += `
+                        <div class="col-12">
+                            <label class="form-label small fw-bold text-muted mb-1" style="font-size: 0.78rem;">Serial Number <span class="text-danger">*</span></label>
+                            <input type="text" name="asset_details[${inventoryId}][${i}][serial_no]" class="form-control dynamic-field-control w-100" placeholder="Enter ${assetType} Serial Number" required>
                         </div>
                     `;
                 }

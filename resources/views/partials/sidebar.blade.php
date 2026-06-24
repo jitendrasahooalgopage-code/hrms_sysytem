@@ -71,6 +71,48 @@
         </a>
     </li>
 
+   <li class="sidebar-header">
+    {{ __('Inventory Management') }}
+</li>
+
+<li class="sidebar-item">
+
+    <a class="sidebar-link"
+       href="{{ route('inventory.index') }}">
+
+        <i class="fa-solid fa-boxes-stacked"></i>
+
+        <span class="align-middle">
+
+            Inventory
+
+        </span>
+
+    </a>
+
+</li>
+
+ <li class="sidebar-header">
+    {{ __('Holiday Management') }}
+</li>
+
+<li class="sidebar-item">
+
+    <a class="sidebar-link"
+       href="{{ route('inventory.index') }}">
+
+        <i class="fa-solid fa-boxes-stacked"></i>
+
+        <span class="align-middle">
+
+            Holiday
+
+        </span>
+
+    </a>
+
+</li>
+
    
 
     {{-- Settings --}}

@@ -23,6 +23,7 @@ use App\Http\Controllers\UserAttendanceController;
 use App\Http\Controllers\AdminAttendanceController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\UserNotificationController;
+use App\Http\Controllers\InventoryController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -58,6 +59,11 @@ Route::middleware('superadmin')->prefix('super')->group(function () {
     Route::resource(
     'employee-assets',
     EmployeeAssetController::class
+);
+
+Route::resource(
+    'inventory',
+    InventoryController::class
 );
 
 Route::get(

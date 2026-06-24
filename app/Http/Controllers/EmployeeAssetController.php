@@ -6,6 +6,8 @@ use App\Models\Employee;
 use App\Models\EmployeeAsset;
 use Illuminate\Http\Request;
 use App\Models\AssetRequest;
+use App\Models\Inventory;
+
 
 class EmployeeAssetController extends Controller
 {
@@ -23,13 +25,21 @@ class EmployeeAssetController extends Controller
         );
     }
 
-    public function create()
+ public function create()
 {
     $employees = Employee::orderBy('firstname')->get();
 
+    $inventories = Inventory::where(
+        'status',
+        'Available'
+    )->get();
+
     return view(
         'admin.employee_assets.create',
-        compact('employees')
+        compact(
+            'employees',
+            'inventories'
+        )
     );
 }
 
@@ -37,19 +47,34 @@ public function store(Request $request)
 {
     $request->validate([
         'employee_id' => 'required',
-        'assets' => 'required|array',
+        'inventories' => 'required|array', // Received as inventory primary IDs
     ]);
 
     $assetDetails = [];
+    $assetNames = [];
 
-    foreach ($request->assets as $asset) {
+    foreach ($request->inventories as $inventoryId) {
+        $inventory = Inventory::where('id', $inventoryId)
+            ->where('status', 'Available')
+            ->first();
 
-        $assetDetails[] = [
-            'asset' => $asset,
-            'qty' => $request->qty[$asset] ?? 1,
-                    'items' => $request->asset_details[$asset] ?? []
+        if ($inventory) {
+            $assetNames[] = $inventory->asset_type;
+            
+            $assetDetails[] = [
+                'inventory_id' => $inventory->id,
+                'asset'        => $inventory->asset_type,
+                'qty'          => (int) ($request->qty[$inventoryId] ?? 1),
+                'items'        => $request->asset_details[$inventoryId] ?? []
+            ];
 
-        ];
+            // Mark individual inventory unit as assigned
+            $inventory->update(['status' => 'Assigned']);
+        }
+    }
+
+    if (empty($assetDetails)) {
+        return redirect()->back()->withErrors(['inventories' => 'No available inventory assets selected.']);
     }
 
     EmployeeAsset::updateOrCreate(
@@ -57,15 +82,11 @@ public function store(Request $request)
             'employee_id' => $request->employee_id
         ],
         [
-            'asset_name' => implode(',', $request->assets),
-
+            'asset_name'    => implode(',', array_unique($assetNames)),
             'asset_details' => $assetDetails,
-
-            'message' => $request->message,
-
+            'message'       => $request->message,
             'assigned_date' => now(),
-
-            'status' => 'Assigned'
+            'status'        => 'Assigned'
         ]
     );
 
@@ -77,50 +98,57 @@ public function store(Request $request)
 public function edit($id)
 {
     $employeeAsset = EmployeeAsset::findOrFail($id);
-
     $employees = Employee::orderBy('firstname')->get();
+    
+    // Fetch inventories so they match create.blade.php dynamically
+    $inventories = Inventory::all(); 
 
-    return view(
-        'admin.employee_assets.edit',
-        compact('employeeAsset', 'employees')
-    );
+    return view('admin.employee_assets.edit', compact('employeeAsset', 'employees', 'inventories'));
 }
 
 public function update(Request $request, $id)
 {
     $request->validate([
         'employee_id' => 'required',
-        'assets'      => 'required|array',
+        'inventories' => 'required|array', // Read by inventory primary record keys
         'status'      => 'required|string',
     ]);
 
     $assetDetails = [];
+    $assetNames = [];
 
-    foreach ($request->assets as $asset) {
-        $rawItems = $request->asset_details[$asset] ?? [];
-        $sanitizedItems = [];
+    foreach ($request->inventories as $inventoryId) {
+        $inventory = Inventory::find($inventoryId);
 
-        // Clean up nested item array values and force integer conversions where needed
-        foreach ($rawItems as $item) {
-            if (isset($item['plan_days'])) {
-                $item['plan_days'] = (int) $item['plan_days'];
+        if ($inventory) {
+            $assetNames[] = $inventory->asset_type;
+            
+            $rawItems = $request->asset_details[$inventoryId] ?? [];
+            $sanitizedItems = [];
+
+            // Clean up individual structural keys
+            foreach ($rawItems as $item) {
+                if (isset($item['plan_days'])) {
+                    $item['plan_days'] = (int) $item['plan_days'];
+                }
+                $sanitizedItems[] = $item;
             }
-            $sanitizedItems[] = $item;
-        }
 
-        $assetDetails[] = [
-            'asset' => $asset,
-            'qty'   => (int) ($request->qty[$asset] ?? 1),
-            'items' => $sanitizedItems
-        ];
+            $assetDetails[] = [
+                'inventory_id' => $inventory->id,
+                'asset'        => $inventory->asset_type,
+                'qty'          => (int) ($request->qty[$inventoryId] ?? 1),
+                'items'        => $sanitizedItems
+            ];
+        }
     }
 
     $employeeAsset = EmployeeAsset::findOrFail($id);
 
     $employeeAsset->update([
         'employee_id'   => $request->employee_id,
-        'asset_name'    => implode(',', $request->assets),
-        'asset_details' => $assetDetails, // Automatically encoded if asset_details is cast to 'array' or 'json' in the Model
+        'asset_name'    => implode(',', array_unique($assetNames)),
+        'asset_details' => $assetDetails,
         'message'       => $request->message,
         'status'        => $request->status,
     ]);
