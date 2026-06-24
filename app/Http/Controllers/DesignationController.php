@@ -62,6 +62,7 @@ class DesignationController extends Controller
     public function update(UpdateDesignationRequest $request, Designation $designation)
     {
         //
+        $designation = Designation::findOrFail($request->id);
         $designation->update($request->all());
         return back()->with('success', 'Designation updated successfully!');
     }

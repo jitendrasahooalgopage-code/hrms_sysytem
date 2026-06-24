@@ -13,26 +13,28 @@ class NotificationResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        // $this contextual instance references the EmployeeNotification pivot model record
+        // $this directly references a single record row instance from the UserAppNotificastion table
         return [
-            'tracking_id'   => $this->id,
-            'user_id'       => $this->user_id,
-            'is_read'       => (bool) $this->is_read,
-            'read_at'       => $this->read_at ? $this->read_at->toIso8601String() : null,
-            'delivered_at'  => $this->created_at->toIso8601String(),
-            'dismissed_at'  => $this->dismissed_at ? $this->dismissed_at->toIso8601String() : null,
+            'id'            => $this->id,
+            'title'         => $this->title,
+            'body'          => $this->body,
+            'category'      => $this->category,
+            'type'          => $this->type,
+            'status'        => $this->status,
+            'icon'          => $this->icon_class ?? $this->icon,
+            'icon_color'    => UserAppNotificastion::iconColorMap()[$this->type] ?? 'primary',
+            'action_url'    => $this->action_url,
+            'action_label'  => $this->action_label,
+            'is_broadcast'  => (bool) $this->is_broadcast,
+            'scheduled_at'  => $this->scheduled_at ? $this->scheduled_at->toIso8601String() : null,
+            'sent_at'       => $this->sent_at ? $this->sent_at->toIso8601String() : null,
+            'created_at'    => $this->created_at->toIso8601String(),
+            'sender'        => $this->creator ? $this->creator->name : 'System Pipeline',
             
-            'notification'  => [
-                'id'           => $this->notification->id,
-                'title'        => $this->notification->title,
-                'body'         => $this->notification->body,
-                'category'     => $this->notification->category,
-                'type'         => $this->notification->type,
-                'icon'         => $this->notification->icon_class,
-                'icon_color'   => UserAppNotificastion::iconColorMap()[$this->notification->type] ?? 'primary',
-                'action_url'   => $this->notification->action_url,
-                'action_label' => $this->notification->action_label,
-                'sender'       => $this->notification->creator ? $this->notification->creator->name : 'System Pipeline',
+            // Aggregated values safely pulled from model getters/appends
+            'metrics'       => [
+                'read_count'        => $this->read_count ?? 0,
+                'total_recipients'  => $this->total_recipients_count ?? 0,
             ]
         ];
     }

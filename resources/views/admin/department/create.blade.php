@@ -14,6 +14,7 @@
       <div class="col-6">
         <form action="{{ Auth::user()->role->slug === 'super-admin' ? route('department.store') : (Auth::user()->role->slug === 'administrator' ? route('admin.department.store') : route('hr.department.store') ) }}" method="post">
           @csrf
+         
           <div class="card flex-fill">
             <div class="card-header">
               <h5 class="card-title mb-0">{{ __('Create New Department') }}</h5>

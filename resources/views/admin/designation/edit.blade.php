@@ -15,6 +15,7 @@
         <form action="{{ Auth::user()->role->slug === 'super-admin' ? route('designation.update', $designation->id) : ( Auth::user()->role->slug === 'administrator' ? route('admin.designation.update', $designation->id) : route('hr.designation.update', $designation->id) ) }}" method="post">
           @csrf
           @method('put')
+          <input type="hidden" name="id" value="{{ $designation->id }}">
           <div class="card flex-fill">
             <div class="card-header">
               <h5 class="card-title mb-0">{{ __('Update Existing Designation') }}</h5>

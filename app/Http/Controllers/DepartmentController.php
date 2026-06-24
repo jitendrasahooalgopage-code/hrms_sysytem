@@ -58,7 +58,9 @@ class DepartmentController extends Controller
      */
     public function update(UpdateDepartmentRequest $request, Department $department)
     {
-        //
+        
+         $department = Department::findOrFail($request->id);
+        
         $department->update($request->all());
         return back()->with('success','Department updated successfully');
     }

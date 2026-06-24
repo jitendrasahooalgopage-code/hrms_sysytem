@@ -23,6 +23,9 @@ use App\Http\Controllers\UserAttendanceController;
 use App\Http\Controllers\AdminAttendanceController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\UserNotificationController;
+use App\Http\Controllers\JobPositionController;
+use App\Http\Controllers\ApplicationController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -50,7 +53,7 @@ Route::middleware('superadmin')->prefix('super')->group(function () {
     // Leaves (resource covers index/create/store/edit/update/destroy)
     Route::resource('leaves', LeaveController::class);
 
-    // ✅ Approve / Reject for super-admin
+
     Route::post('/leaves/{id}/approve', [LeaveController::class, 'approve'])->name('leaves.approve');
     Route::post('/leaves/{id}/reject',  [LeaveController::class, 'reject'])->name('leaves.reject');
 
@@ -136,7 +139,32 @@ Route::get(
 
     Route::get('user-notifications/duplicate',[UserNotificationController::class,'duplicate'])->name('user-notifications.duplicate');
 
-    
+     // Kanban board
+        Route::get('kanban', [ApplicationController::class, 'kanban'])->name('kanban');
+
+        // CV download
+        Route::get('{application}/cv', [ApplicationController::class, 'downloadCv'])->name('cv.download');
+
+        // Stage management
+        Route::post('{application}/stage', [ApplicationController::class, 'advanceStage'])->name('stage.update');
+        Route::post('move-data/{application}/stage/ajax', [ApplicationController::class, 'updateStageAjax'])->name('stage.ajax');
+
+        // Interview rounds
+        Route::post('{application}/rounds', [ApplicationController::class, 'scheduleRound'])->name('rounds.store');
+        Route::patch('{application}/rounds/{round}', [ApplicationController::class, 'updateRound'])->name('rounds.update');
+
+        Route::resource('applications', ApplicationController::class);
+        Route::resource('positions', JobPositionController::class);
+
+
+        Route::get('employees/import',          [EmployeeController::class, 'bulkImportForm'])
+         ->name('employee.import.form');
+
+    Route::post('employees/import',         [EmployeeController::class, 'bulkImport'])
+         ->name('employee.import');
+
+    Route::get('employees/import/template', [EmployeeController::class, 'downloadTemplate'])
+         ->name('employee.import.template');
 
 
 
@@ -315,6 +343,9 @@ Route::middleware('hr')->prefix('hr-manager')->group(function () {
 
     Route::prefix('employee')->group(function () {
         Route::get('/', [EmployeeController::class, 'index'])->name('hr.employee.index');
+         Route::get('/import', [EmployeeController::class, 'bulkImportForm'])->name('hr.employee.import.form');
+        Route::post('/import', [EmployeeController::class, 'bulkImport'])->name('hr.employee.import');
+        Route::get('/import/template', [EmployeeController::class, 'downloadTemplate'])->name('hr.employee.import.template');
         Route::get('/create', [EmployeeController::class, 'create'])->name('hr.employee.create');
         Route::get('/{id}/show', [EmployeeController::class, 'show'])->name('hr.employee.show');
         Route::post('/', [EmployeeController::class, 'create'])->name('hr.employee.store');
@@ -322,6 +353,12 @@ Route::middleware('hr')->prefix('hr-manager')->group(function () {
         Route::put('/{id}', [EmployeeController::class, 'update'])->name('hr.employee.update');
         Route::delete('/{id}', [EmployeeController::class, 'destroy'])->name('hr.employee.destroy');
         // Route::get('notifications/read/{id}',[NotificationController::class,'read'])->name('hr.notifications.read');
+
+        // Route::get('import',[EmployeeController::class, 'bulkImportForm'])->name('hr.import.form');
+
+        // Route::post('employees/import',[EmployeeController::class, 'bulkImport'])->name('hr.import');
+
+        // Route::get('employees/import/template', [EmployeeController::class, 'downloadTemplate'])->name('hr.import.template');
     });
 
     Route::prefix('leaves')->group(function () {

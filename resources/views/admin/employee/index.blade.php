@@ -12,6 +12,14 @@
       <i class="fas fa-plus"></i>
       <span class="ps-1">{{ __('Add New') }}</span>
     </a>
+    <a href="{{ Auth::user()->role->slug === 'super-admin'
+            ? route('employee.import.form')
+            : (Auth::user()->role->slug === 'hr-manager'
+                ? route('hr.employee.import.form')
+                : route('admin.employee.import.form')) }}"
+            class="btn btn-outline-success">
+            <i data-feather="upload" class="me-1"></i> Bulk Import
+        </a>
   </div>
 @endsection
 

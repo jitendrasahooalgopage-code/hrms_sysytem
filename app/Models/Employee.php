@@ -43,7 +43,13 @@ class Employee extends Model
         'salary_slip_2',
         'salary_slip_3',
         'bank_passbook_page',
-        'emp_status'
+        'emp_status',
+        'official_email',
+        'personal_email',
+        'emergency_phone',
+        'doj',
+        'blood_group',
+        
     ];
 // Define relationships
     public function user(): BelongsTo {
