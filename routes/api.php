@@ -6,6 +6,9 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\LeaveController;
 use App\Http\Controllers\Api\UserAttendanceController;
 use App\Http\Controllers\Api\AppNotificationController;
+use App\Http\Controllers\Api\HolidayController;
+use App\Http\Controllers\Api\SalarySlipController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +20,8 @@ use App\Http\Controllers\Api\AppNotificationController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+
 
 Route::post('/login', [AuthController::class, 'login']);
 
@@ -35,6 +40,16 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::put('/leaves/{id}', [LeaveController::class, 'update']);
 
     Route::delete('/leaves/{id}', [LeaveController::class, 'destroy']);
+
+    Route::get('/my-leaveType', [LeaveController::class, 'getMyLeaveTypes']);
+
+    Route::get('/holidays', [HolidayController::class, 'index']);
+
+    
+    // 2. Mid list data array endpoints
+    Route::get('salary-slips', [SalarySlipController::class, 'index']);
+
+
 
     
     Route::post('checkin',  [UserAttendanceController::class, 'checkin']) ->name('checkin');

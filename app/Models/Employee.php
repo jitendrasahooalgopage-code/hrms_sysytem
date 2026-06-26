@@ -119,11 +119,20 @@ public function asset()
     return $this->hasOne(EmployeeAsset::class);
 }
 
+public function salarySlips(): \Illuminate\Database\Eloquent\Relations\HasMany {
+        return $this->hasMany(SalarySlip::class);
+    }
+
 public function assetRequests()
 {
     return $this->hasMany(
         AssetRequest::class
     );
+}
+
+public function leaveAllocations()
+{
+    return $this->hasMany(EmployeeLeaveAllocation::class, 'employee_id');
 }
 
 // Helper — get the first approver when submitting a leave

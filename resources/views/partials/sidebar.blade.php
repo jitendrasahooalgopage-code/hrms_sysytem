@@ -4,7 +4,7 @@
       <span class="align-middle">ALGOPAGE HRMS</span>
     </a>
 
-    <ul class="sidebar-nav">
+    < class="sidebar-nav">
       <li class="sidebar-item">
         <a class="sidebar-link" href="{{ Auth::user()->role->slug === 'super-admin' ? route('super.dashboard') : 
         ( Auth::user()->role->slug === 'administrator' ? route('admin.dashboard')  : 
@@ -105,13 +105,13 @@
 </li>
 
  <li class="sidebar-header">
-    {{ __('Holiday Management') }}
+    {{ __('Settings') }}
 </li>
 
 <li class="sidebar-item">
 
     <a class="sidebar-link"
-       href="{{ route('inventory.index') }}">
+       href="{{ route('holiday.index') }}">
 
         <i class="fa-solid fa-boxes-stacked"></i>
 
@@ -123,6 +123,61 @@
 
     </a>
 
+</li>
+
+<li class="sidebar-item">
+
+    <a class="sidebar-link"
+       href="{{ route('salary-slip.index') }}">
+
+        <i class="fa-solid fa-boxes-stacked"></i>
+
+        <span class="align-middle">
+
+            Salary-slip
+
+        </span>
+
+    </a>
+
+</li>
+
+<li class="sidebar-item">
+
+    <a class="sidebar-link"
+       href="{{ route('leave-allocation.index') }}">
+
+        <i class="fa-solid fa-boxes-stacked"></i>
+
+        <span class="align-middle">
+
+            Leave Allcoation
+
+        </span>
+
+    </a>
+
+</li>
+
+<li class="sidebar-item">
+
+    <a class="sidebar-link"
+       href="{{ route('employee-leave.assignments.index') }}">
+
+        <i class="fa-solid fa-boxes-stacked"></i>
+
+        <span class="align-middle">
+
+            Assign Leave Allcoation
+
+        </span>
+
+    </a>
+
+</li>
+
+
+  
 </li>
 
    
@@ -274,6 +329,20 @@
             My Assets
         </span>
 
+    </a>
+</li>
+
+<li class="sidebar-item">
+    <a class="sidebar-link" href="{{ route('employee.holidays') }}">
+        <i class="fa-solid fa-calendar-day"></i>
+        <span class="align-middle">My Holidays</span>
+    </a>
+</li>
+
+<li class="sidebar-item">
+    <a class="sidebar-link" href="{{ route('salary-slip.my-slips') }}">
+        <i class="fa-solid fa-file-invoice-dollar"></i>
+        <span class="align-middle">My Payslips</span>
     </a>
 </li>
 

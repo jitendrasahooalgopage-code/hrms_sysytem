@@ -101,25 +101,45 @@ class AuthController extends Controller
     {
         if (!empty($request->user())) {
 
-            $user = User::leftJoin(
-                'employees',
-                'employees.user_id',
-                '=',
-                'users.id'
-            )
-            ->where(
-                'users.email',
-                $request->user()->email
-            )
-            ->select(
-                'users.id',
-                'users.email',
-                'users.name',
-                'users.phone',
-                'employees.*',
-                
-            )
-            ->first();
+           $user = User::leftJoin(
+        'employees',
+        'employees.user_id',
+        '=',
+        'users.id'
+    )
+    ->leftJoin(
+        'departments',
+        'departments.id',
+        '=',
+        'employees.department_id'
+    )
+    ->leftJoin(
+        'designations',
+        'designations.id',
+        '=',
+        'employees.designation_id'
+    )
+    ->leftJoin(
+        'schedules',
+        'schedules.id',
+        '=',
+        'employees.schedule_id'
+    )
+    ->where(
+        'users.email',
+        $request->user()->email
+    )
+    ->select(
+        'users.id',
+        'users.email',
+        'users.name',
+        'users.phone',
+        'employees.*',
+        'departments.title as department_name',
+        'designations.title as designation_name',
+        'schedules.title as schedule_name'
+    )
+    ->first();
 
             return response()->json([
                 'user' => $user,

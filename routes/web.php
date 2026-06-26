@@ -26,6 +26,12 @@ use App\Http\Controllers\UserNotificationController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\JobPositionController;
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\HolidayController;
+use App\Http\Controllers\SalarySlipController;
+use App\Http\Controllers\LeaveTypeController;
+use App\Http\Controllers\LeaveAllocationController;
+use App\Http\Controllers\EmployeeLeaveAllocationController;
+
 
 
 Route::get('/', function () {
@@ -54,6 +60,14 @@ Route::middleware('superadmin')->prefix('super')->group(function () {
     // Leaves (resource covers index/create/store/edit/update/destroy)
     Route::resource('leaves', LeaveController::class);
 
+    // Leave Configuration Core Sub-Ledger Matrices
+Route::resource('leave-types', LeaveTypeController::class)->except(['create', 'show', 'edit']);
+Route::resource('leave-allocation', LeaveAllocationController::class)->except(['create', 'show', 'edit', 'update']);
+
+// Employee Personal Leave Assignments Pipeline
+Route::get('employee-leave-assignments', [EmployeeLeaveAllocationController::class, 'index'])->name('employee-leave.assignments.index');
+Route::post('employee-leave-assignments/assign', [EmployeeLeaveAllocationController::class, 'assignPolicy'])->name('employee-leave.assignments.assign');
+
 
     Route::post('/leaves/{id}/approve', [LeaveController::class, 'approve'])->name('leaves.approve');
     Route::post('/leaves/{id}/reject',  [LeaveController::class, 'reject'])->name('leaves.reject');
@@ -63,6 +77,15 @@ Route::middleware('superadmin')->prefix('super')->group(function () {
     'employee-assets',
     EmployeeAssetController::class
 );
+
+// Employee live search endpoint API execution mapping
+Route::get('admin/salary-slip/search-employee', [SalarySlipController::class, 'searchEmployee'])->name('salary-slip.search-employee');
+Route::get('admin/salary-slip/{id}/pdf', [SalarySlipController::class, 'downloadPDF'])->name('salary-slip.pdf');
+
+// Resource routing declaration
+Route::resource('salary-slip', SalarySlipController::class);
+
+Route::resource('holiday', HolidayController::class);
 
 Route::resource(
     'inventory',
@@ -305,6 +328,17 @@ Route::middleware('employee')->prefix('employee')->group(function () {
     '/my-assets',
     [EmployeeAssetController::class,'myAssets']
 )->name('employee.assets');
+
+Route::get(
+    '/my-holidays',
+    [HolidayController::class, 'myHolidays']
+)->name('employee.holidays');
+
+Route::get('admin/my-salary-slips', [SalarySlipController::class, 'mySalarySlips'])->name('salary-slip.my-slips');
+// Inside routes/web.php -> Route::middleware('employee')->...
+Route::get('/my-salary-slip/{id}/pdf', [SalarySlipController::class, 'downloadPDF'])->name('employee.salary-slip.pdf');
+
+
 
 Route::get(
     '/asset-requests/create/{asset}',

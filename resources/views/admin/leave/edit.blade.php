@@ -12,18 +12,17 @@
   <section class="row">
     <div class="col-8">
       <form method="POST" action="{{ Auth::user()->role->slug === 'super-admin' ? route('leaves.update', $leave->id) : ( Auth::user()->role->slug === 'administrator' ? route('admin.leaves.update', $leave->id) : route('hr.leaves.update', $leave->id) ) }}">
-        {{-- <form method="POST" action="{{ route('admin.leaves.update', $leave->id) }}"> --}}
         @csrf
         @method('put')
         <div class="card flex-fill">
           <div class="card-header">
-            <h5 class="card-title mb-0">Add Leave</h5>
+            <h5 class="card-title mb-0">Edit Leave</h5>
           </div>
           <div class="card-body">
             <div class="row g-3">
               <div class="col-12">
-                <label for="start_date">Leave Title</label>
-                <input type="text" name="title" id="start_date" class="form-control" value="{{ $leave->title }}" required>
+                <label for="title">Leave Title</label>
+                <input type="text" name="title" id="title" class="form-control" value="{{ $leave->title }}" required>
               </div>
               <div class="col-12">
                 <label for="employee_id">Employee</label>
@@ -44,26 +43,25 @@
               <div class="col-6">
                 <label for="leave_type">Leave Type</label>
                 <select name="leave_type" id="leave_type" class="form-control" required>
-                  <option value="1" {{$leave->leave_type === 1 ? 'selected' : '' }} >Vacation</option>
-                  <option value="2" {{$leave->leave_type === 2 ? 'selected' : '' }} >Sick Leave</option>
-                  <option value="3" {{$leave->leave_type === 3 ? 'selected' : '' }} >Emergency Leave</option>
-                  <option value="4" {{$leave->leave_type === 4 ? 'selected' : '' }} >Involuntary Leave</option>
-                  <option value="5" {{$leave->leave_type === 5 ? 'selected' : '' }} >Medical Leave</option>
-                  <option value="6" {{$leave->leave_type === 6 ? 'selected' : '' }} >Casual Leave</option>
-                  <option value="7" {{$leave->leave_type === 7 ? 'selected' : '' }} >Marriage Leave</option>
+                  {{-- Made Dynamic to match your Leave setup tables seamlessly --}}
+                  @foreach($leaveTypes as $type)
+                    <option value="{{ $type->id }}" {{ $leave->leave_type == $type->id ? 'selected' : '' }}>
+                      {{ $type->name }}
+                    </option>
+                  @endforeach
                 </select>
               </div>
               <div class="col-6">
-                <label for="status">Leave Type</label>
+                <label for="status">Status</label>
                 <select name="status" id="status" class="form-control" required>
                   <option value="1" {{$leave->status === 1 ? 'selected' : '' }} >Approved</option>
                   <option value="0" {{$leave->status === 0 ? 'selected' : '' }} >Rejected</option>
                   <option value="2" {{$leave->status === 2 ? 'selected' : '' }} >Pending</option>
                 </select>
               </div>
-              <div>
+              <div class="col-12">
                 <label for="leave_reason">Leave Reason</label>
-                <textarea name="leave_reason" class="form-control" id="">{{ $leave->leave_reason }}</textarea>
+                <textarea name="leave_reason" class="form-control" id="leave_reason" rows="3">{{ $leave->leave_reason }}</textarea>
               </div>
             </div>
           </div>
