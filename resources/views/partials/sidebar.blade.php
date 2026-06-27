@@ -4,7 +4,7 @@
       <span class="align-middle">ALGOPAGE HRMS</span>
     </a>
 
-    < class="sidebar-nav">
+   
       <li class="sidebar-item">
         <a class="sidebar-link" href="{{ Auth::user()->role->slug === 'super-admin' ? route('super.dashboard') : 
         ( Auth::user()->role->slug === 'administrator' ? route('admin.dashboard')  : 
@@ -57,15 +57,25 @@
         </a>
     </li>
 
+    
+
     <li class="sidebar-item">
-        <a class="sidebar-link" href="{{ route('employee-assets.index') }}">
+        <a class="sidebar-link"  href="{{ Auth::user()->role->slug === 'super-admin'
+                    ? route('employee-assets.index')
+                    : (Auth::user()->role->slug === 'administrator'
+                        ? route('admin.employee-assets.index')
+                        : route('employee-assets.index')) }}">
             <i class="fa-solid fa-laptop"></i>
             <span class="align-middle">{{ __('Asset Management') }}</span>
         </a>
     </li>
 
      <li class="sidebar-item">
-        <a class="sidebar-link" href="{{ route('user-notifications.index') }}">
+        <a class="sidebar-link"  href="{{ Auth::user()->role->slug === 'super-admin'
+                    ? route('user-notifications.index')
+                    : (Auth::user()->role->slug === 'administrator'
+                        ? route('admin.user-notifications.index')
+                        : route('hr.user-notifications.index')) }}">
             <i class="fa-solid fa-laptop"></i>
             <span class="align-middle">{{ __('User Notification Management') }}</span>
         </a>
@@ -110,8 +120,15 @@
 
 <li class="sidebar-item">
 
+   href="{{ Auth::user()->role->slug === 'super-admin'
+                    ? route('employee.index')
+                    : (Auth::user()->role->slug === 'administrator'
+                        ? route('admin.employee.index')
+                        : route('hr.employee.index')) }}"
+
     <a class="sidebar-link"
-       href="{{ route('holiday.index') }}">
+       href="{{ route('holiday.index') }}"
+       >
 
         <i class="fa-solid fa-boxes-stacked"></i>
 
@@ -210,7 +227,7 @@
 
 @endif
 
-      @if (Auth::check() && (Auth::user()->role->slug === 'super-admin' || Auth::user()->role->slug === 'administrator' || Auth::user()->role->slug === 'moderator'))
+      @if (Auth::check() && (Auth::user()->role->slug === 'super-admin' ||Auth::user()->role->slug === 'hr-manager' || Auth::user()->role->slug === 'administrator' || Auth::user()->role->slug === 'moderator'))
         <li class="sidebar-header">{{ __('Attendance Management') }}</li>
       {{-- @endif
 
@@ -228,14 +245,16 @@
         </li>
 
         <li class="sidebar-item">
-        <a class="sidebar-link" href="{{ Auth::user()->role->slug === 'super-admin' ? route('attendance-list.index') : (Auth::user()->role->slug === 'administrator' ? route('admin.attendance-list.index') : route('moderator.attendance-list.index') ) }}">
+        <a class="sidebar-link" href="{{ Auth::user()->role->slug === 'super-admin' ? route('attendance-list.index') : 
+        (Auth::user()->role->slug === 'hr-manager' ? route('hr.attendance-list.index') : route('moderator.attendance-list.index') ) }}">
           <i class="fa-solid fa-clock"></i>
           <span class="align-middle">{{ __('Check Daily Attendance') }}</span>
         </a>
         </li>
 
         <li class="sidebar-item">
-        <a class="sidebar-link" href="{{ Auth::user()->role->slug === 'super-admin' ? route('notifications.index') : (Auth::user()->role->slug === 'administrator' ? route('admin.notifications.index') : route('moderator.notifications.index') ) }}">
+        <a class="sidebar-link" href="{{ Auth::user()->role->slug === 'super-admin' ? route('notifications.index') : 
+        (Auth::user()->role->slug === 'hr-manager' ? route('hr.notifications.index') : route('moderator.notifications.index') ) }}">
           <i class="fa-solid fa-clock"></i>
           <span class="align-middle">{{ __('Notification Settings') }}</span>
         </a>
@@ -245,7 +264,7 @@
       @if (Auth::check() && (Auth::user()->role->slug === 'super-admin' || Auth::user()->role->slug === 'administrator' || Auth::user()->role->slug === 'moderator')) --}}
         <li class="sidebar-item">
         <a class="sidebar-link" href="{{ Auth::user()->role->slug === 'super-admin' ? route('attendance.index') : 
-        (Auth::user()->role->slug === 'administrator' ? route('admin.attendance.index') : route('moderator.attendance.index') ) }}">
+        (Auth::user()->role->slug === 'hr-manager' ? route('hr.attendance.index') : route('moderator.attendance.index') ) }}">
           <i class="fa-solid fa-calendar-days"></i>
           <span class="align-middle">{{ __('Daily Attendance') }}</span>
         </a>
