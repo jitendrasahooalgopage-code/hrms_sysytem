@@ -101,9 +101,17 @@ class AuthController extends Controller
      * Get authenticated user profile along with corporate hierarchy names.
      * GET /api/v1/profile
      */
+   /**
+     * Get authenticated user profile with full avatar URLs and corporate hierarchies.
+     * GET /api/v1/profile
+     */
     public function profile(Request $request)
     {
         if (!empty($request->user())) {
+
+            // Pre-calculate the base storage absolute path domain string matrix dynamically
+            // Example: "http://yourdomain.com/storage/"
+            $storageUrl = url('storage') . '/';
 
             $user = User::leftJoin(
                     'employees',
@@ -129,28 +137,24 @@ class AuthController extends Controller
                     '=',
                     'employees.schedule_id'
                 )
-                // 1. Join hierarchy bridge table mapping
                 ->leftJoin(
                     'employee_hierarchies',
                     'employee_hierarchies.employee_id',
                     '=',
                     'employees.id'
                 )
-                // 2. Pull Team Lead Name fields
                 ->leftJoin(
                     'employees as tl',
                     'tl.id',
                     '=',
                     'employee_hierarchies.team_lead_id'
                 )
-                // 3. Pull Manager Name fields
                 ->leftJoin(
                     'employees as mgr',
                     'mgr.id',
                     '=',
                     'employee_hierarchies.manager_id'
                 )
-                // 4. Pull HR Name fields
                 ->leftJoin(
                     'employees as hr_emp',
                     'hr_emp.id',
@@ -167,11 +171,17 @@ class AuthController extends Controller
                     'users.name',
                     'users.phone',
                     'employees.*',
+                    
+                    // FIXED: Overwrites the raw employee avatar field string with an industry standard absolute download URL asset string
+                    \DB::raw("CASE 
+                        WHEN employees.avatar IS NOT NULL THEN CONCAT('{$storageUrl}', employees.avatar)
+                        ELSE NULL 
+                     END as avatar"),
+
                     'departments.title as department_name',
                     'designations.title as designation_name',
                     'schedules.title as schedule_name',
                     
-                    // Dynamic Hierarchy Name Strings Mappings
                     \DB::raw("CONCAT(tl.firstname, ' ', tl.lastname) as team_lead_name"),
                     \DB::raw("CONCAT(mgr.firstname, ' ', mgr.lastname) as manager_name"),
                     \DB::raw("CONCAT(hr_emp.firstname, ' ', hr_emp.lastname) as hr_name")
