@@ -201,6 +201,11 @@ Route::get(
 
 });
 
+Route::resource(
+    'inventory',
+    InventoryController::class
+);
+
 // ─────────────────────────────────────────────
 // ADMINISTRATOR
 // ─────────────────────────────────────────────
@@ -413,7 +418,71 @@ Route::middleware('hr')->prefix('hr-manager')->group(function () {
         Route::post('/{id}/approve', [LeaveController::class, 'approve'])->name('hr.leaves.approve');
         Route::post('/{id}/reject',  [LeaveController::class, 'reject'])->name('hr.leaves.reject');
     });
+
+
+    
+    Route::get('attendance-list',[AdminAttendanceController::class, 'index'])->name('hr.attendance-list.index');
+    Route::get('attendance-list/{attendance_log}',  [AdminAttendanceController::class, 'show'])->name('hr.attendance-list.show');
+    Route::delete('attendance-list/{attendance_log}',  [AdminAttendanceController::class, 'destroy'])->name('hr.attendance-list.destroy');
+    Route::patch ('attendance-list/{attendance_log}/force-checkout', [AdminAttendanceController::class, 'forceCheckout'])->name('hr.attendance-list.force-checkout');
+
+    Route::get('notifications',[NotificationController::class,'index'])->name('hr.notifications.index');
+    Route::get('notifications/create',[NotificationController::class,'create'])->name('hr.notifications.create');
+    
+
+    Route::delete('notifications', [NotificationController::class,'delete'])->name('hr.notifications.delete');
+
+
+
+    Route::post('notifications/send',[NotificationController::class,'send'])->name('hr.notifications.send');
+
+
+    Route::get('notifications/history',[NotificationController::class,'history'])->name('hr.notifications.history');
+
+    Route::get('user-notifications',[UserNotificationController::class,'index'])->name('hr.user-notifications.index');
+    Route::get('user-notifications/show',[UserNotificationController::class,'show'])->name('hr.user-notifications.show');
+    Route::get('user-notifications/create',[UserNotificationController::class,'create'])->name('hr.user-notifications.create');
+    Route::post('user-notifications/store',[UserNotificationController::class,'store'])->name('hr.user-notifications.store');
+    Route::post('user-notifications/send-now',[UserNotificationController::class,'sendNow'])->name('hr.user-notifications.sendNow');
+
+    Route::delete('user-notifications/destroy',[UserNotificationController::class,'destroy'])->name('hr.user-notifications.destroy');
+
+    Route::get('user-notifications/edit',[UserNotificationController::class,'edit'])->name('hr.user-notifications.edit');
+
+    Route::get('user-notifications/duplicate',[UserNotificationController::class,'duplicate'])->name('hr.user-notifications.duplicate');
+
+     // Kanban board
+        Route::get('kanban', [ApplicationController::class, 'kanban'])->name('hr.kanban');
+
+        // CV download
+        Route::get('{application}/cv', [ApplicationController::class, 'downloadCv'])->name('hr.cv.download');
+
+        // Stage management
+        Route::post('{application}/stage', [ApplicationController::class, 'advanceStage'])->name('hr.stage.update');
+        Route::post('move-data/{application}/stage/ajax', [ApplicationController::class, 'updateStageAjax'])->name('hr.stage.ajax');
+
+        // Interview rounds
+        Route::post('{application}/rounds', [ApplicationController::class, 'scheduleRound'])->name('hr.rounds.store');
+        Route::patch('{application}/rounds/{round}', [ApplicationController::class, 'updateRound'])->name('hr.rounds.update');
+
+        Route::resource('applications', ApplicationController::class);
+        Route::resource('positions', JobPositionController::class);
+
+
+         Route::get('/attendance', [AttendanceController::class, 'index'])->name('hr.attendance.index');
+        Route::post('/check', [CheckController::class, 'CheckStore'])->name('hr.check.store');
+        Route::get('/report', [CheckController::class, 'sheetReport'])->name('hr.sheet.report');
+
+         Route::resource(
+    'employee-assets',
+    EmployeeAssetController::class
+);
+
 });
+Route::resource(
+    'employee-assets',
+    EmployeeAssetController::class
+);
 
 // ─────────────────────────────────────────────
 // PAYROLL MANAGER
