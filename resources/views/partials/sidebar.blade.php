@@ -4,7 +4,6 @@
       <span class="align-middle">ALGOPAGE HRMS</span>
     </a>
 
-    < class="sidebar-nav">
       <li class="sidebar-item">
         <a class="sidebar-link" href="{{ Auth::user()->role->slug === 'super-admin' ? route('super.dashboard') : 
         ( Auth::user()->role->slug === 'administrator' ? route('admin.dashboard')  : 

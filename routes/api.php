@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\UserAttendanceController;
 use App\Http\Controllers\Api\AppNotificationController;
 use App\Http\Controllers\Api\HolidayController;
 use App\Http\Controllers\Api\SalarySlipController;
+use App\Http\Controllers\Api\RecentActivityController;
 
 
 /*
@@ -68,4 +69,6 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::post('/read-all', [AppNotificationController::class, 'markAllAsRead']);
 
     Route::get('/get-all-employees', [AuthController::class, 'getAllEmployees']);
+
+    Route::get('/recent-activities', [RecentActivityController::class, 'getRecentActivities']);
 });

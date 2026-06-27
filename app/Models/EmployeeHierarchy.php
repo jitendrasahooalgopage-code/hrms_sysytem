@@ -1,5 +1,5 @@
 <?php
-// app/Models/EmployeeHierarchy.php
+// app/Models/EmployeeHierarchy.php 
 
 namespace App\Models;
 
