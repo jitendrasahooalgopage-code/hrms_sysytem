@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\AppNotificationController;
 use App\Http\Controllers\Api\HolidayController;
 use App\Http\Controllers\Api\SalarySlipController;
 use App\Http\Controllers\Api\RecentActivityController;
+use App\Http\Controllers\Api\RoleController;
 
 
 /*
@@ -49,6 +50,8 @@ Route::middleware('auth:sanctum')->group( function () {
     
     // 2. Mid list data array endpoints
     Route::get('salary-slips', [SalarySlipController::class, 'index']);
+
+    Route::get('/roles-list', [RoleController::class, 'getTitlesList']);
 
 
 

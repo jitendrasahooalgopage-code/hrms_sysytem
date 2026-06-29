@@ -233,14 +233,54 @@ class LeaveController extends Controller
     /**
      * Get Single Leave
      */
-    public function show($id)
+   /**
+     * Get Leaves with Role-Based Scope Visibility.
+     * GET /api/v1/leaves
+     */
+    public function index(Request $request)
     {
+        $user = $request->user();
+        $employee = $user->employee;
 
-   
+        // Base Query Builder with relationships eager-loaded
+        $query = Leave::with(['employee', 'currentApprover'])->latest();
+
+        // If the user has a role, check its slug. (Adjust 'slug' or 'title' to match your Role model)
+        $roleSlug = $user->role->slug ?? 'employee';
+
+        // INDUSTRY STANDARD SECURITY GATE: Non-management profiles only see their own rows
+        if (!in_array($roleSlug, ['super-admin', 'hr', 'administrator', 'manager', 'team-lead'])) {
+            if (!$employee) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Employee profile record missing.'
+                ], 404);
+            }
+            $query->where('employee_id', $employee->id);
+        }
+
+        $leaves = $query->paginate(20);
+
+        return response()->json([
+            'status' => true,
+            'data' => $leaves
+        ], 200);
+    }
+
+    /**
+     * Get Single Leave Details with Ownership Protection.
+     * GET /api/v1/leaves/{id}
+     */
+    public function show(Request $request, $id)
+    {
+        $user = $request->user();
+        $employee = $user->employee;
+        $roleSlug = $user->role->slug ?? 'employee';
+
         $leave = Leave::with([
             'employee',
             'currentApprover',
-            'histories'
+            'histories.actor'
         ])->find($id);
 
         if (!$leave) {
@@ -250,28 +290,20 @@ class LeaveController extends Controller
             ], 404);
         }
 
+        // SECURITY MULTI-GATE: Block if it's a regular employee and they don't own this specific request
+        if (!in_array($roleSlug, ['super-admin', 'hr', 'administrator', 'manager', 'team-lead'])) {
+            if (!$employee || $leave->employee_id !== $employee->id) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Unauthorized access to this leave record request.'
+                ], 403);
+            }
+        }
+
         return response()->json([
             'status' => true,
             'data' => $leave
-        ]);
-    }
-
-    /**
-     * Get All Leaves
-     */
-    public function index()
-    {
-        $leaves = Leave::with([
-            'employee',
-            'currentApprover'
-        ])
-        ->latest()
-        ->paginate(20);
-
-        return response()->json([
-            'status' => true,
-            'data' => $leaves
-        ]);
+        ], 200);
     }
 
 

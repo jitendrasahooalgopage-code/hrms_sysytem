@@ -213,6 +213,11 @@ class AuthController extends Controller
      * GET /api/v1/all-employees?role=Employee
      * GET /api/v1/all-employees?role=2
      */
+   /**
+     * Retrieve all system user profiles with dynamic role filters, keyword search, and context markers.
+     * GET /api/v1/all-employees?role=Employee&search=Suresh
+     * GET /api/v1/all-employees?search=EMP-2026
+     */
     public function getAllEmployees(Request $request)
     {
         // Get the authenticated user ID from the active Sanctum session token
@@ -232,17 +237,29 @@ class AuthController extends Controller
                 'users.role_id'
             );
 
-        // ENTERPRISE PARAMETER FILTER: Handle dynamic role filtration criteria dynamically
+        // 1. ENTERPRISE PARAMETER FILTER: Handle dynamic role filtration criteria dynamically
         if ($request->has('role') && !empty($request->role)) {
             $roleParam = $request->role;
 
             if (is_numeric($roleParam)) {
-                // Filter by direct foreign key ID (e.g. ?role=2)
                 $query->where('users.role_id', $roleParam);
             } else {
-                // Filter by role title/slug text match (e.g. ?role=Employee)
                 $query->where('roles.title', $roleParam);
             }
+        }
+
+        // 2. SEARCH PARAMETER FILTER: Multi-column keyword matching wrapped in a logical grouping block
+        if ($request->has('search') && !empty($request->search)) {
+            $searchTerm = $request->search;
+
+            $query->where(function ($subQuery) use ($searchTerm) {
+                $subQuery->where('users.name', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('users.email', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('users.phone', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('employees.firstname', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('employees.lastname', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('employees.unique_id', 'LIKE', "%{$searchTerm}%");
+            });
         }
 
         // Fetch records cleanly ordered
@@ -286,6 +303,7 @@ class AuthController extends Controller
             'message' => 'All system user profiles compiled with identity mapping.',
             'filters_applied' => [
                 'role' => $request->get('role') ?? 'none',
+                'search' => $request->get('search') ?? 'none',
             ],
             'count' => $formattedUsersList->count(),
             'data' => $formattedUsersList
